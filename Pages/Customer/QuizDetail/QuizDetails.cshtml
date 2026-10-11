@@ -1,0 +1,297 @@
+﻿@page "{id:int}"
+@model DALTWNC_QUIZ.Pages.Customer.QuizDetail.QuizDetailsModel
+@{
+    ViewData["Title"] = Model.Quiz?.QuizTitle ?? "Chi tiết bộ đề";
+}
+<link rel="stylesheet" href="~/css/CusDetail/quiz-details.css" asp-append-version="true" />
+
+<div class="container mt-4">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <a href="javascript:void(0);" onclick="history.back()" class="btn btn-light border">
+            <i class="fas fa-arrow-left me-2"></i> Quay lại
+        </a>
+    </div>
+
+    <h2 class="section-title">Thông tin</h2>
+    <div class="quiz-info-block">
+        <div class="info-badge-wrapper d-flex align-items-center flex-wrap gap-2">
+
+            <span class="badge bg-primary quiz-badge">@(Model.Quiz.SubjectName ?? "Chung")</span>
+
+            @if (Model.Quiz.IsDynamic)
+            {
+                <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle rounded-pill">
+                    <i class="fa-solid fa-wand-magic-sparkles me-1"></i>
+                    Ngẫu Nhiên
+                </span>
+            }
+
+        </div>
+
+        <h1 class="info-title">@Model.Quiz.QuizTitle</h1>
+
+        @if (!string.IsNullOrEmpty(Model.Quiz.Description))
+        {
+            <p class="info-description">@Model.Quiz.Description</p>
+        }
+
+        <hr class="info-separator">
+
+        <div class="info-details-list">
+            <div class="info-row">
+                <span class="info-label">Số câu hỏi:</span>
+                <span class="info-value">@Model.Quiz.QuestionCount câu</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Thời gian (dự kiến):</span>
+                <span class="info-value">@Model.Quiz.CalculatedTime phút</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Ngày tạo:</span>
+                <span class="info-value">@Model.Quiz.CreatedDate.ToString("dd/MM/yyyy")</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Người tạo:</span>
+                <span class="info-value">@Model.Quiz.CreatedBy</span>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-2 my-4">
+            <button type="button"
+                    class="btn btn-primary shadow-sm take-exam-btn"
+                    data-url="@Url.Page("/Customer/Exam/Take", new { id = Model.Quiz.QuizID, returnUrl = Model.returnUrl })">
+                <i class="fa-solid fa-play me-2"></i> Bắt đầu làm bài
+            </button>
+
+            <button type="button"
+                    class="btn shadow-sm @(Model.IsSaved ? "btn-danger" : "btn-outline-secondary") save-btn"
+                    data-quiz-id="@Model.Quiz.QuizID"
+                    title="@(Model.IsSaved ? "Bỏ lưu" : "Lưu xem sau")">
+                <i class="@(Model.IsSaved ? "fa-solid" : "fa-regular") fa-bookmark me-2"></i>
+                <span class="save-text">@(Model.IsSaved ? "Đã lưu" : "Lưu xem sau")</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <h2 class="section-title">Đánh giá</h2>
+        <div id="rating-summary-wrapper" class="quiz-info-block">
+            @await Component.InvokeAsync("RatingSummary", new { quizId = Model.Quiz.QuizID, currentUserRating = Model.CurrentUserRating })
+        </div>
+    </div>
+
+    <div id="comments-wrapper" class="quiz-feedback-section mt-4">
+        @await Component.InvokeAsync("Comments", new { quizId = Model.Quiz.QuizID })
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        async function submitRating(quizId, stars) {
+            const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+            if (!tokenInput) return;
+
+            try {
+                const response = await fetch('?handler=SubmitRating', {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': tokenInput.value,
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                    },
+                    body: `quizId=${quizId}&stars=${stars}`
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        Swal.fire({ toast: true, position: 'top-end', icon: 'warning', title: 'Bạn cần đăng nhập để đánh giá.', showConfirmButton: false, timer: 3000 });
+                    } else {
+                        let msg = 'Lỗi kết nối.';
+                        try { const data = await response.json(); msg = data.message; } catch { }
+                        Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: msg, showConfirmButton: false, timer: 3000 });
+                    }
+                    return;
+                }
+
+                const newHtml = await response.text();
+                document.getElementById("rating-summary-wrapper").innerHTML = newHtml;
+                updateStarsUI(stars);
+                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: `Đánh giá ${stars} sao thành công!`, showConfirmButton: false, timer: 3000, timerProgressBar: true });
+
+            } catch (error) {
+                console.error(error);
+                Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: 'Không thể gửi đánh giá.', showConfirmButton: false, timer: 3000 });
+            }
+        }
+
+        async function submitComment(quizId) {
+            const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+            const contentInput = document.getElementById("comment-input");
+
+            if (!contentInput.value.trim()) {
+                Swal.fire({ toast: true, position: 'top-end', icon: 'warning', title: 'Vui lòng nhập nội dung.', showConfirmButton: false, timer: 3000 });
+                return;
+            }
+
+            try {
+                const response = await fetch('?handler=SubmitComment', {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': tokenInput.value,
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                    },
+                    body: `quizId=${quizId}&content=${encodeURIComponent(contentInput.value)}`
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        Swal.fire({ toast: true, position: 'top-end', icon: 'warning', title: 'Bạn cần đăng nhập để bình luận.', showConfirmButton: false, timer: 3000 });
+                    } else {
+                        let msg = 'Lỗi kết nối.';
+                        try { const data = await response.json(); msg = data.message; } catch { }
+                        Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: msg, showConfirmButton: false, timer: 3000 });
+                    }
+                    return;
+                }
+
+                const newHtml = await response.text();
+                document.getElementById("comments-wrapper").innerHTML = newHtml;
+                setupCommentInputLogic();
+                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Đã gửi bình luận!', showConfirmButton: false, timer: 3000, timerProgressBar: true });
+
+            } catch (error) {
+                console.error(error);
+                Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: 'Không thể gửi bình luận.', showConfirmButton: false, timer: 3000 });
+            }
+        }
+
+        function updateStarsUI(selectedStars) {
+            const starIcons = document.querySelectorAll("#rating-summary-wrapper .rating-stars-display .fa-star");
+            starIcons.forEach(star => {
+                const starValue = parseInt(star.getAttribute('data-star-value'));
+                if (starValue <= selectedStars) {
+                    star.classList.add('fa-solid'); star.classList.remove('fa-regular');
+                } else {
+                    star.classList.add('fa-regular'); star.classList.remove('fa-solid');
+                }
+            });
+        }
+
+        function setupCommentInputLogic() {
+            const commentInput = document.getElementById("comment-input");
+            const commentControls = document.getElementById("comment-controls");
+            const cancelCommentBtn = document.getElementById("cancel-comment-btn");
+            if (commentInput && commentControls && cancelCommentBtn) {
+                commentInput.addEventListener("focus", () => { commentControls.style.display = "flex"; });
+                cancelCommentBtn.addEventListener("click", () => {
+                    commentInput.value = "";
+                    commentControls.style.display = "none";
+                    commentInput.blur();
+                });
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            setupCommentInputLogic();
+            document.addEventListener("click", function (event) {
+                const container = document.getElementById("comment-form-container");
+                const controls = document.getElementById("comment-controls");
+                if (container && controls && !container.contains(event.target)) {
+                    controls.style.display = "none";
+                }
+            });
+
+            const saveBtn = document.querySelector('.save-btn');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const quizId = saveBtn.dataset.quizId;
+                    const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+
+                    try {
+                        const response = await fetch('@Url.Page("/Index", "ToggleSave")', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'RequestVerificationToken': tokenInput ? tokenInput.value : ''
+                            },
+                            body: JSON.stringify({ quizId: parseInt(quizId), returnUrl: window.location.pathname })
+                        });
+
+                        if (!response.ok) throw new Error('Request failed');
+                        const result = await response.json();
+
+                        if (result.success) {
+                            const icon = saveBtn.querySelector('i');
+                            const textSpan = saveBtn.querySelector('.save-text');
+
+                            if (result.saved) {
+                                saveBtn.classList.remove('btn-outline-secondary');
+                                saveBtn.classList.add('btn-danger');
+                                icon.classList.remove('fa-regular');
+                                icon.classList.add('fa-solid');
+                                saveBtn.title = 'Bỏ lưu';
+                                if (textSpan) textSpan.textContent = 'Đã lưu';
+                            } else {
+                                saveBtn.classList.remove('btn-danger');
+                                saveBtn.classList.add('btn-outline-secondary');
+                                icon.classList.remove('fa-solid');
+                                icon.classList.add('fa-regular');
+                                saveBtn.title = 'Lưu xem sau';
+                                if (textSpan) textSpan.textContent = 'Lưu xem sau';
+                            }
+
+                            Swal.fire({
+                                toast: true, position: 'top-end', icon: 'success',
+                                title: result.saved ? 'Đã lưu bộ đề!' : 'Đã bỏ lưu!',
+                                showConfirmButton: false, timer: 3000, timerProgressBar: true
+                            });
+                        } else {
+                            Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: result.message || 'Có lỗi xảy ra', showConfirmButton: false, timer: 3000 });
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: 'Lỗi kết nối server.', showConfirmButton: false, timer: 3000 });
+                    }
+                });
+            }
+
+            const takeExamBtn = document.querySelector('.take-exam-btn');
+            if (takeExamBtn) {
+                takeExamBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const targetUrl = takeExamBtn.dataset.url;
+                    const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+
+                    try {
+                        const response = await fetch('@Url.Page("/Index", "CheckLogin")', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'RequestVerificationToken': tokenInput ? tokenInput.value : ''
+                            }
+                        });
+
+                        if (!response.ok) throw new Error('Network error');
+                        const result = await response.json();
+
+                        if (result.success) {
+                            window.location.href = targetUrl;
+                        } else {
+                            Swal.fire({
+                                toast: true, position: 'top-end', icon: 'warning',
+                                title: result.message || 'Bạn cần đăng nhập.',
+                                showConfirmButton: false, timer: 3000, timerProgressBar: true
+                            });
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: 'Lỗi kết nối server.', showConfirmButton: false, timer: 3000 });
+                    }
+                });
+            }
+        });
+    </script>
+}

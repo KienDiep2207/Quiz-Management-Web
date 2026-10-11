@@ -1,0 +1,73 @@
+﻿@page
+@model DALTWNC_QUIZ.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Đăng nhập";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - QuizSystem</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/account.css" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<body>
+    <div class="login-container">
+        <h3>Đăng nhập</h3>
+        <form method="post">
+            <input type="text" class="form-control" placeholder="Tài khoản" asp-for="Input.Username" required />
+            <input type="password" class="form-control" placeholder="Mật khẩu" asp-for="Input.Password" required />
+
+            <button type="submit" class="btn btn-primary">Đăng nhập</button>
+
+            <div class="login-link">
+                <span>Bạn chưa có tài khoản?</span> <a asp-page="Register">Đăng ký ngay.</a>
+            </div>
+            <div class="forgot-pass">
+                <a asp-page="/Account/ForgotPassword">Quên mật khẩu</a>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                        Swal.fire({
+                            toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: '@TempData["SuccessMessage"]',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true
+                                });
+            </text>
+        }
+
+        else if (ViewData["Error"] != null)
+        {
+            <text>
+                        Swal.fire({
+                            toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: '@ViewData["Error"]',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true
+                                });
+            </text>
+        }
+    }
+);
+    </script>
+</body>
+</html>

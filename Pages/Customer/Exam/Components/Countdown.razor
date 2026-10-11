@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Components
+@using Microsoft.JSInterop
+@namespace DALTWNC_QUIZ.Pages.Customer.Exam.Components
+@inject IJSRuntime JS
+
+<div class="text-center">
+    <div class="fs-5 fw-bold text-success" id="timerDisplay">@timeDisplay</div>
+</div>
+
+@code {
+    [Parameter] public int Minutes { get; set; } = 30;
+    private TimeSpan timeRemaining;
+    private string timeDisplay = "";
+
+    protected override void OnInitialized()
+    {
+        timeRemaining = TimeSpan.FromMinutes(Minutes);
+        UpdateDisplay();
+        _ = StartCountdownAsync();
+    }
+
+    private async Task StartCountdownAsync()
+    {
+        while (timeRemaining.TotalSeconds > 0)
+        {
+            await Task.Delay(1000);
+            timeRemaining = timeRemaining.Subtract(TimeSpan.FromSeconds(1));
+            UpdateDisplay();
+            StateHasChanged();
+        }
+
+        await JS.InvokeVoidAsync("submitQuizForm");
+    }
+
+    private void UpdateDisplay()
+    {
+        timeDisplay = $"{timeRemaining.Minutes:D2}:{timeRemaining.Seconds:D2}";
+    }
+}

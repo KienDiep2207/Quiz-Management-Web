@@ -1,0 +1,336 @@
+﻿/* ==================================== */
+/* === STYLES CHO LAYOUT CUSTOMER === */
+/* ==================================== */
+
+body {
+    /* 1. Đường dẫn URL đến ảnh của bạn */
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK4eWHxnDdjV8jYfslRZ62wL7YKB-1E5le2A&s');
+    /* 2. Cho ảnh che phủ toàn bộ màn hình */
+    background-size: cover;
+    /* 3. Giữ ảnh cố định khi cuộn (hiệu ứng parallax) */
+    background-attachment: fixed;
+    /* 4. Căn ảnh ra giữa */
+    background-position: center center;
+    /* 5. Không lặp lại ảnh */
+    background-repeat: no-repeat;
+    background-color: #f8f9fa; /* Nền xám nhạt cho toàn trang */
+    font-family: 'Roboto', sans-serif;
+    font-size: .875rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* --- Header/Navbar --- */
+.navbar-brand {
+    font-weight: 700;
+}
+
+    .navbar-brand .fa-brain,
+    .navbar-brand .brand-quiz {
+        color: #198754; /* Màu xanh lá (success) */
+    }
+
+    .navbar-brand .brand-study {
+        color: #212529; /* Màu đen (dark) */
+    }
+
+/* Nút Đăng nhập/Đăng ký */
+.btn-register, .btn-login {
+    padding: 0.25rem 0.75rem;
+    border-radius: 30px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.btn-register {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+    border: 1px solid #0d6efd;
+}
+
+    .btn-register:hover {
+        background-color: #e2e6ea;
+        color: #0a58ca;
+    }
+
+.btn-login {
+    background-color: #0d6efd;
+    color: #fff;
+    border: 1px solid #0d6efd;
+}
+
+    .btn-login:hover {
+        background-color: #0b5ed7;
+        color: #fff;
+    }
+
+/* --- Main Content --- */
+main {
+     min-height: 75vh; 
+     flex: 1 0 auto;
+    background-color: transparent;
+}
+footer.footer-main {
+    background-color: #2c3e50;
+    color: #adb5bd !important;
+    padding: 1.5rem 0; /* <<< SỬA 1: Giảm padding (từ 2rem) để mỏng hơn */
+    margin-top: auto;
+}
+
+    /* Ép màu trắng cho các tiêu đề */
+    footer.footer-main h5 {
+        color: #ffffff !important;
+        font-weight: 600;
+        margin-bottom: 1rem; /* <<< SỬA 2: Giảm margin (từ 1.25rem) */
+    }
+
+    /* === FIX LỖI GẠCH CHÂN LOGO (MẠNH HƠN) === */
+    /* Thêm 'a' vào selector để tăng độ ưu tiên */
+    footer.footer-main a.footer-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: #ffffff !important;
+        text-decoration: none !important; /* <<< SỬA 3: Đây là selector mạnh nhất */
+    }
+        /* Phải thêm 'a' vào đây để giữ màu xanh */
+        footer.footer-main a.footer-brand .fa-brain {
+            color: #198754 !important;
+        }
+
+    /* Ép màu xám nhạt cho mô tả */
+    footer.footer-main .footer-description {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #adb5bd !important;
+    }
+
+    /* Ép màu xám nhạt cho các link */
+    footer.footer-main .list-unstyled a {
+        color: #adb5bd !important;
+        text-decoration: none !important;
+        transition: color 0.2s ease, padding-left 0.2s ease;
+        display: inline-block;
+        padding: 0.25rem 0;
+    }
+        /* Ép màu xanh lá khi hover VÀ GIỮ HIỆU ỨNG THỤT VÀO */
+        footer.footer-main .list-unstyled a:hover {
+            color: #198754 !important;
+            padding-left: 5px; /* Giữ hiệu ứng thụt vào */
+        }
+
+    /* Ép màu xám nhạt cho icon social */
+    footer.footer-main .social-icons a {
+        font-size: 1.4rem;
+        margin-right: 15px;
+        color: #adb5bd !important;
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+        footer.footer-main .social-icons a:hover {
+            color: #ffffff !important;
+            transform: scale(1.1);
+        }
+
+/* Dải bản quyền ở dưới cùng (mỏng hơn) */
+div.footer-bottom {
+    background-color: #212529;
+    color: #86909c !important;
+    padding: 0.75rem 0; /* <<< SỬA 4: Giảm padding (từ 1rem) */
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+/* ==================================== */
+/* === CAROUSEL WITH THUMBNAILS === */
+/* ==================================== */
+.carousel-indicators-thumb-wrapper {
+    margin-top: 15px;
+}
+
+.carousel-indicators-thumb {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Khoảng cách giữa các thumbnail */
+}
+
+    .carousel-indicators-thumb button {
+        width: 100px;
+        height: 50px;
+        opacity: 0.5;
+        background: none;
+        border: 2px solid transparent;
+        border-radius: 5px;
+        padding: 0;
+        transition: opacity 0.3s ease, border-color 0.3s ease;
+        overflow: hidden;
+    }
+
+        .carousel-indicators-thumb button img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-indicators-thumb button.active {
+            opacity: 1;
+            border-color: #0d6efd; /* Màu xanh Primary của Bootstrap */
+        }
+
+.carousel-item img {
+    width: 100%;
+    height: 400px; /* hoặc auto */
+    object-fit: cover;
+}
+
+/* ==================================== */
+/* === STYLES CHO TRANG CHỦ (Home) === */
+/* ==================================== */
+.section-title {
+    font-weight: 700;
+    color: #2c3e50;
+    position: relative;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background-color: #198754; /* Màu xanh lá (success) */
+        border-radius: 2px;
+    }
+
+/* --- Subject Card --- */
+.subject-card-link {
+    text-decoration: none;
+}
+
+.subject-card {
+    border: 1px solid #dee2e6;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .subject-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .subject-card .card-title {
+        font-weight: 600;
+        color: #34495e;
+    }
+
+    .subject-card .card-text {
+        font-size: 0.9rem;
+    }
+/* ==================================== */
+/* === STYLES CHO QUIZ CARD (ĐÃ SỬA) === */
+/* ==================================== */
+.quiz-card {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+}
+    /* Hiệu ứng HOVER "nổi" */
+    .quiz-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Tiêu đề card (link) - Sửa lỗi gạch chân */
+    .quiz-card .card-title-link {
+        color: #2c3e50;
+        font-weight: 600;
+        text-decoration: none !important; /* Bỏ gạch chân */
+        transition: color 0.2s ease;
+    }
+
+        .quiz-card .card-title-link:hover {
+            color: #198754;
+            text-decoration: none !important; /* Bỏ gạch chân */
+        }
+
+    .quiz-card .card-text {
+        font-size: 0.85rem;
+        height: 63px; /* Chiều cao = 3 dòng (line-height ~21px) */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* Số dòng tối đa */
+        -webkit-box-orient: vertical;
+        line-height: 1.6;
+    }
+
+    .quiz-card .card-footer {
+        background-color: #fcfcfc;
+        border-top: 1px solid #f0f0f0;
+    }
+
+    .quiz-card .btn-primary {
+        background-color: #198754;
+        border-color: #198754;
+        transition: all 0.2s ease;
+    }
+
+        .quiz-card .btn-primary:hover {
+            background-color: #146c43;
+            border-color: #146c43;
+            transform: scale(1.05);
+        }
+
+    .quiz-card .btn-outline-secondary {
+        transition: all 0.2s ease;
+    }
+
+        .quiz-card .btn-outline-secondary:hover {
+            color: #fff;
+            background-color: #5a6268;
+        }
+    /* ============================================================ */
+    /* === FIX LỖI RESPONSIVE CARD (CHỒNG CHÉO KHI THU NHỎ) === */
+    /* ============================================================ */
+
+    .quiz-card .card-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid #f0f0f0;
+    }
+
+    .quiz-card .action-meta {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        flex: 1 1 auto;
+        min-width: 90px; 
+    }
+
+    .quiz-card .card-rating {
+        font-size: 0.9rem;
+        white-space: nowrap;
+        margin-bottom: 2px;
+    }
+
+    .quiz-card .action-meta small {
+        font-size: 0.8rem;
+        white-space: nowrap;
+        color: #6c757d;
+    }
+
+    .quiz-card .action-buttons {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex: 0 0 auto;
+        margin-left: auto;
+    }

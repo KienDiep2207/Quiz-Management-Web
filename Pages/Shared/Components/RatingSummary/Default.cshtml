@@ -1,0 +1,68 @@
+﻿@model DALTWNC_QUIZ.Pages.Shared.Components.RatingSummary.RatingSummaryViewModel
+
+<div class="quiz-info-block">
+    <h3 class="section-title">Đánh giá</h3>
+
+    <div class="row align-items-center">
+        <div class="col-md-4 text-center border-end">
+            <div class="rating-avg-number">@Model.AverageRating.ToString("0.0")</div>
+            <div class="rating-stars-display" data-quiz-id="@Model.QuizId">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <i class="fa-star @(i <= (int)@ViewData["CurrentUserRating"] ? "fa-solid" : "fa-regular")" 
+                       data-star-value="@i" 
+                       onclick="submitRating(@Model.QuizId, @i)"></i>
+                }
+            </div>
+            <div class="text-muted mt-1">(@Model.TotalReviews đánh giá)</div>
+        </div>
+        
+        <div class="col-md-8 ps-4">
+            <div class="rating-bar-row">
+                <span class="rating-bar-label">5 sao</span>
+                <div class="progress">
+                    <div class="progress-bar bg-warning" role="progressbar" 
+                         style="width: @(Model.FiveStarPercent.ToString("F0"))%;" 
+                         aria-valuenow="@Model.FiveStarPercent" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <span class="rating-bar-percent">@(Model.FiveStarPercent.ToString("F0"))%</span>
+            </div>
+            <div class="rating-bar-row">
+                <span class="rating-bar-label">4 sao</span>
+                <div class="progress">
+                    <div class="progress-bar bg-warning" role="progressbar" 
+                         style="width: @(Model.FourStarPercent.ToString("F0"))%;" 
+                         aria-valuenow="@Model.FourStarPercent" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <span class="rating-bar-percent">@(Model.FourStarPercent.ToString("F0"))%</span>
+            </div>
+            <div class="rating-bar-row">
+                <span class="rating-bar-label">3 sao</span>
+                <div class="progress">
+                    <div class="progress-bar bg-warning" role="progressbar" 
+                         style="width: @(Model.ThreeStarPercent.ToString("F0"))%;" 
+                         aria-valuenow="@Model.ThreeStarPercent" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <span class="rating-bar-percent">@(Model.ThreeStarPercent.ToString("F0"))%</span>
+            </div>
+            <div class="rating-bar-row">
+                <span class="rating-bar-label">2 sao</span>
+                <div class="progress">
+                    <div class="progress-bar bg-warning" role="progressbar" 
+                         style="width: @(Model.TwoStarPercent.ToString("F0"))%;" 
+                         aria-valuenow="@Model.TwoStarPercent" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <span class="rating-bar-percent">@(Model.TwoStarPercent.ToString("F0"))%</span>
+            </div>
+            <div class="rating-bar-row">
+                <span class="rating-bar-label">1 sao</span>
+                <div class="progress">
+                    <div class="progress-bar bg-warning" role="progressbar" 
+                         style="width: @(Model.OneStarPercent.ToString("F0"))%;" 
+                         aria-valuenow="@Model.OneStarPercent" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <span class="rating-bar-percent">@(Model.OneStarPercent.ToString("F0"))%</span>
+            </div>
+        </div>
+    </div>
+</div>

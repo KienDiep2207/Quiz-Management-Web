@@ -1,0 +1,328 @@
+﻿@page
+@model DALTWNC_QUIZ.Pages.Admin.SearchModel
+@{
+    ViewData["Title"] = string.IsNullOrEmpty(Model.query) ? "Tìm kiếm" : $"Kết quả cho '{Model.query}'";
+    var totalResults = Model.FoundUsers.Count +
+                       Model.FoundSubjects.Count +
+                       Model.FoundQuizzes.Count +
+                       Model.FoundCategories.Count +
+                       Model.FoundQuestions.Count +
+                       Model.FoundResults.Count +
+                       Model.FoundComments.Count +
+                       Model.FoundRatings.Count;
+}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">@ViewData["Title"]</h1>
+
+    <vc:search-bar />
+
+    <a asp-page="/Admin/Home" class="btn btn-sm btn-outline-secondary ms-2" title="Quay về Dashboard">
+       Quay lại
+    </a>
+</div>
+
+@if (string.IsNullOrEmpty(Model.query))
+{
+    <div class="alert alert-info" role="alert">
+        Vui lòng nhập từ khóa vào ô tìm kiếm phía trên.
+    </div>
+}
+else if (totalResults == 0)
+{
+    <div class="alert alert-warning" role="alert">
+        Không tìm thấy kết quả nào khớp với từ khóa "<strong>@Model.query</strong>".
+    </div>
+}
+else
+{
+     @foreach (var cardType in Model.ResultOrder)
+    {
+        @switch (cardType)
+        {
+            case "Users":
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-users me-2"></i> Người dùng (@Model.FoundUsers.Count)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @if (!Model.FoundUsers.Any())
+                        {
+                            <p class="text-muted">Không tìm thấy người dùng nào khớp với từ khóa.</p>
+                        }
+                        else
+                        {
+                            <ul class="list-group list-group-flush">
+                                @foreach (var user in Model.FoundUsers)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="fw-bold">@user.Username</span>
+                                            @if (user.Customer != null)
+                                            {
+                                                <small class="text-muted ms-2">(@user.Customer.CustomerName)</small>
+                                            }
+                                            @if (user.UserRole == "A")
+                                            {
+                                                <span class="badge bg-danger ms-2">Admin</span>
+                                            }
+                                        </div>
+                                        <div>
+                                            @if (user.Customer != null)
+                                            {
+                                                <a asp-page="/Admin/User/Details" asp-route-id="@user.Customer.CustomerID" class="btn btn-sm btn-outline-info me-1" title="Xem chi tiết">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </a>
+                                            }
+                                            <a asp-page="/Admin/User/Edit" asp-route-id="@user.Username" class="btn btn-sm btn-outline-primary" title="Sửa quyền/trạng thái">
+                                                <i class="fa-solid fa-user-shield"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+                break;
+
+            case "Subjects":
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-book me-2"></i> Môn học (@Model.FoundSubjects.Count)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @if (!Model.FoundSubjects.Any())
+                        {
+                            <p class="text-muted">Không tìm thấy môn học nào khớp với từ khóa.</p>
+                        }
+                        else
+                        {
+                            <ul class="list-group list-group-flush">
+                                @foreach (var subject in Model.FoundSubjects)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>@subject.SubjectName</span>
+                                        <a asp-page="/Admin/Subject/Edit" asp-route-id="@subject.SubjectID" class="btn btn-sm btn-outline-primary" title="Sửa">
+                                            <i class="fa-solid fa-pencil"></i>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+                break;
+
+            case "Quizzes":
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-list-check me-2"></i> Bộ đề thi (@Model.FoundQuizzes.Count)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @if (!Model.FoundQuizzes.Any())
+                        {
+                            <p class="text-muted">Không tìm thấy bộ đề nào khớp với từ khóa.</p>
+                        }
+                        else
+                        {
+                            <ul class="list-group list-group-flush">
+                                @foreach (var quiz in Model.FoundQuizzes)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>@quiz.QuizTitle</span>
+                                        <div>
+                                            <a asp-page="/Admin/Questions/Index" asp-route-quizId="@quiz.QuizID" class="btn btn-sm btn-outline-success me-1" title="Quản lý câu hỏi">
+                                                <i class="fa-solid fa-list-ol"></i>
+                                            </a>
+                                            <a asp-page="/Admin/Quizzes/Edit" asp-route-id="@quiz.QuizID" class="btn btn-sm btn-outline-primary" title="Sửa">
+                                                <i class="fa-solid fa-pencil"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+                break;
+
+            case "Categories":
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-tags me-2"></i> Danh mục Câu hỏi (@Model.FoundCategories.Count)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @if (!Model.FoundCategories.Any())
+                        {
+                            <p class="text-muted">Không tìm thấy danh mục nào khớp với từ khóa.</p>
+                        }
+                        else
+                        {
+                            <ul class="list-group list-group-flush">
+                                @foreach (var category in Model.FoundCategories)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>@category.CategoryName</span>
+                                        <a asp-page="/Admin/QuestionCategories/Edit" asp-route-id="@category.CategoryID" class="btn btn-sm btn-outline-primary" title="Sửa">
+                                            <i class="fa-solid fa-pencil"></i>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+                break;
+
+            case "Questions": 
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-question-circle me-2"></i> Câu hỏi (@Model.FoundQuestions.Count)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @if (!Model.FoundQuestions.Any())
+                        {
+                            <p class="text-muted">Không tìm thấy câu hỏi nào khớp với từ khóa.</p>
+                        }
+                        else
+                        {
+                            <ul class="list-group list-group-flush">
+                                @foreach (var question in Model.FoundQuestions)
+                                {
+                                    var qText = question.QuestionText.Length > 100 ? question.QuestionText.Substring(0, 100) + "..." : question.QuestionText;
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            @Html.Raw(qText)
+
+                                            <small class="d-block text-muted"> (Môn học: @(question.Subject?.SubjectName ?? "N/A"))</small>
+                                        </div>
+                                        <a asp-page="/Admin/QuestionsBank/Edit" asp-route-id="@question.QuestionID" class="btn btn-sm btn-outline-primary" title="Sửa">
+                                            <i class="fa-solid fa-pencil"></i>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+                break;
+
+            case "Results":
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-file-signature me-2"></i> Kết quả thi (@Model.FoundResults.Count)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @if (!Model.FoundResults.Any())
+                        {
+                            <p class="text-muted">Không tìm thấy kết quả thi nào khớp với từ khóa.</p>
+                        }
+                        else
+                        {
+                            <ul class="list-group list-group-flush">
+                                @foreach (var result in Model.FoundResults)
+                                {
+                                    <li class="list-group-item">
+                                        <span class="fw-bold">@result.Score điểm</span> -
+                                        <small class="text-muted">@result.Customer?.CustomerName (@result.StartTime.ToString("dd/MM/yy"))</small>
+                                        <small class="d-block text-muted">Bộ đề: @result.Quiz?.QuizTitle</small>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+                break;
+
+            case "Comments":
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-comments me-2"></i> Bình luận (@Model.FoundComments.Count)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @if (!Model.FoundComments.Any())
+                        {
+                            <p class="text-muted">Không tìm thấy bình luận nào khớp với từ khóa.</p>
+                        }
+                        else
+                        {
+                            <ul class="list-group list-group-flush">
+                                @foreach (var comment in Model.FoundComments)
+                                {
+                                    var content = comment.Content.Length > 100 ? comment.Content.Substring(0, 100) + "..." : comment.Content;
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            @content
+                                            <small class="d-block text-muted">Bởi: @comment.Customer?.CustomerName - Bộ đề: @comment.Quiz?.QuizTitle</small>
+                                        </div>
+                                        <a asp-page="/Admin/Comments/Index" class="btn btn-sm btn-outline-secondary" title="Xem trong danh sách">
+                                            <i class="fa-solid fa-arrow-right"></i>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+                break;
+
+            case "Ratings":
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-star me-2"></i> Đánh giá (@Model.FoundRatings.Count)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @if (!Model.FoundRatings.Any())
+                        {
+                            <p class="text-muted">Không tìm thấy đánh giá nào khớp với từ khóa.</p>
+                        }
+                        else
+                        {
+                            <ul class="list-group list-group-flush">
+                                @foreach (var rating in Model.FoundRatings)
+                                {
+                                    var commentText = rating.Comment?.Length > 100 ? rating.Comment.Substring(0, 100) + "..." : rating.Comment;
+                                    <li class="list-group-item">
+                                        <div>
+                                            @for (int i = 0; i < rating.Stars; i++)
+                                            {
+                                                <i class="fa-solid fa-star text-warning"></i>
+                                            }
+                                            @for (int i = rating.Stars; i < 5; i++)
+                                            {
+                                                <i class="fa-regular fa-star text-muted"></i>
+                                            }
+                                            <span class="fw-bold ms-1">(@rating.Stars sao)</span>
+                                            @if (!string.IsNullOrEmpty(commentText))
+                                            {
+                                                <span class="ms-2"> - "@commentText"</span>
+                                            }
+                                        </div>
+                                        <small class="text-muted">Bởi: @rating.Customer?.CustomerName - Bộ đề: @rating.Quiz?.QuizTitle</small>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+                break;
+        }
+    }
+}

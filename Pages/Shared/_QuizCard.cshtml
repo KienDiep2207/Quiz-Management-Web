@@ -1,0 +1,85 @@
+﻿@model DALTWNC_QUIZ.Models.ViewModels.QuizCardViewModel
+
+<div class="card quiz-card h-100 shadow-sm">
+    <div class="card-body">
+
+        <div class="mb-3 d-flex justify-content-between align-items-center gap-2">
+
+            <span class="badge bg-success text-truncate" style="max-width: 65%;" title="@(Model.SubjectName)">
+                @(Model.SubjectName)
+            </span>
+
+            @if (Model.IsDynamic)
+            {
+                <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle rounded-pill flex-shrink-0">
+                    <i class="fa-solid fa-wand-magic-sparkles me-1"></i>
+                    Ngẫu Nhiên
+                </span>
+            }
+        </div>
+
+        <h5>
+            <a asp-page="/Customer/QuizDetail/QuizDetails"
+               asp-route-id="@Model.QuizID"
+               asp-route-returnUrl="@Model.ReturnUrl"
+               class="card-title-link">
+                @Model.QuizTitle
+            </a>
+        </h5>
+
+        <p class="card-text text-muted">@Model.Description</p>
+    </div>
+
+    <div class="card-footer card-actions">
+        <div class="action-meta">
+            <div class="card-rating me-3">
+                @if (Model.TotalReviews > 0)
+                {
+                    <span class="rating-value fw-bold">@Model.AverageRating.ToString("0.0")</span>
+                    var roundedRating = Math.Round(Model.AverageRating * 2) / 2;
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        if (i <= roundedRating)
+                        {
+                            <i class="fa-solid fa-star text-warning"></i>
+                        }
+                        else if (i - 0.5 == roundedRating)
+                        {
+                            <i class="fa-solid fa-star-half-stroke text-warning"></i>
+                        }
+                        else
+                        {
+                            <i class="fa-regular fa-star text-warning"></i>
+                        }
+                    }
+                    <span class="rating-count text-muted ms-1">(@Model.TotalReviews)</span>
+                }
+                else
+                {
+                    <span class="text-muted" title="Chưa có đánh giá">
+                        <i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i>
+                    </span>
+                }
+            </div>
+
+            <small class="text-muted">
+                <i class="fa-solid fa-list-ol me-1"></i> @Model.QuestionCount câu hỏi
+            </small>
+        </div>
+
+        <div class="action-buttons">
+            <button type="button"
+                    class="btn btn-sm @(Model.IsSaved ? "btn-outline-danger" : "btn-outline-secondary") save-btn"
+                    data-quiz-id="@Model.QuizID"
+                    title="@(Model.IsSaved ? "Bỏ lưu" : "Lưu xem sau")">
+                <i class="@(Model.IsSaved ? "fa-solid" : "fa-regular") fa-heart"></i>
+            </button>
+
+            <button type="button"
+                    class="btn btn-sm btn-primary take-exam-btn"
+                    data-url="@Url.Page("/Customer/Exam/Take", new { id = Model.QuizID, returnUrl = Model.ReturnUrl })">
+                Làm bài <i class="fa-solid fa-arrow-right ms-1"></i>
+            </button>
+        </div>
+    </div>
+</div>

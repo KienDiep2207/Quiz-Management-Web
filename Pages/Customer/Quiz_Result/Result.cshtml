@@ -1,0 +1,79 @@
+﻿@page
+@model DALTWNC_QUIZ.Pages.Customer.Quiz_Result.ResultModel
+@{
+    Layout = "~/Pages/Shared/_Layout_Cus.cshtml";
+    ViewData["Title"] = "Kết quả bài thi";
+}
+
+<link rel="stylesheet" href="~/css/customer/result.css" />
+
+<div class="result-container">
+    <h2 class="result-title">BẠN ĐÃ HOÀN THÀNH BÀI THI</h2>
+
+    @if (Model.ExamResult != null)
+    {
+        <div class="result-card">
+            @{
+                var totalSeconds = Model.ExamResult.DurationMinute ?? 0;
+                var minutes = totalSeconds / 60;
+                var seconds = totalSeconds % 60;
+                var durationString = $"{minutes} phút {seconds} giây";
+
+                if (minutes == 0)
+                {
+                    durationString = $"{seconds} giây";
+                }
+            }
+            <h3 class="quiz-name">@Model.ExamResult.Quiz?.QuizTitle</h3>
+
+            <p class="quiz-score">@Model.ExamResult.Score.Value.ToString("0.##") Điểm</p>
+
+            <div class="quiz-meta-grid row text-center my-4">
+                <div class="col-4">
+                    <div class="meta-item">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        <span class="meta-label">Số câu đúng</span>
+                        <span class="meta-value">@Model.ExamResult.CorrectAnswers / @Model.ExamResult.TotalQuestions</span>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="meta-item">
+                        <i class="bi bi-stopwatch-fill text-info"></i>
+                        <span class="meta-label">Thời gian làm</span>
+                        <span class="meta-value">@durationString</span>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="meta-item">
+                        <i class="bi bi-calendar-check-fill text-primary"></i>
+                        <span class="meta-label">Ngày thi</span>
+                        <span class="meta-value">@Model.ExamResult.StartTime.ToLocalTime().ToString("HH:mm - dd/MM/yyyy")</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-buttons">
+
+                <form method="post" asp-page-handler="Retake" style="display:inline;">
+                    <input type="hidden" name="resultId" value="@Model.ExamResult.QuizAttemptID" />
+                    <input type="hidden" name="quizId" value="@Model.ExamResult.QuizID" />
+                    <button type="submit" class="btn btn-green">Làm lại</button>
+                </form>
+
+                <a asp-page="Review" asp-route-id="@Model.ExamResult.QuizAttemptID" class="btn btn-orange">Xem đáp án chi tiết</a>
+            </div>
+
+            <div class="result-buttons">
+                <a asp-page="/Customer/SubjectQuizzes/Index" asp-route-id="@Model.ExamResult.Quiz.SubjectID" class="btn btn-outline">Làm đề môn tương tự</a>
+                <a asp-page="/Customer/Subjects/Index" class="btn btn-yellow">Làm đề môn khác</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-danger">
+            Không tìm thấy kết quả bài thi.
+        </p>
+        <a asp-page="/Index" class="btn btn-primary">Quay về Trang chủ</a>
+    }
+</div>

@@ -1,0 +1,398 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+
+            <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+
+                <div class="carousel-inner rounded shadow-sm">
+                    <div class="carousel-item active">
+                        <img src="~/images/banners/banner7.jpg" class="d-block w-100" alt="Banner 1">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="~/images/banners/banner8.jpg" class="d-block w-100" alt="Banner 2">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="~/images/banners/banner9.jpg" class="d-block w-100" alt="Banner 3">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="~/images/banners/banner10.jpg" class="d-block w-100" alt="Banner 4">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="~/images/banners/banner11.jpg" class="d-block w-100" alt="Banner 5">
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
+
+
+                <div class="carousel-indicators-thumb d-flex justify-content-center mt-3">
+                    <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1">
+                        <img src="~/images/banners/banner7.jpg" class="d-block w-100" alt="Thumb 1">
+                    </button>
+                    <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1" aria-label="Slide 2">
+                        <img src="~/images/banners/banner8.jpg" class="d-block w-100" alt="Thumb 2">
+                    </button>
+                    <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="2" aria-label="Slide 3">
+                        <img src="~/images/banners/banner9.jpg" class="d-block w-100" alt="Thumb 3">
+                    </button>
+                    <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="3" aria-label="Slide 4">
+                        <img src="~/images/banners/banner10.jpg" class="d-block w-100" alt="Thumb 4">
+                    </button>
+                    <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="4" aria-label="Slide 5">
+                        <img src="~/images/banners/banner11.jpg" class="d-block w-100" alt="Thumb 5">
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5 mb-5"> <div class="card shadow-sm border-0">
+        <div class="card-body p-4 p-md-5">
+            <div class="row g-4 align-items-center">
+
+                <div class="col-lg-7 col-md-12">
+                    <h2 class="display-6 fw-bold" style="color: #2c3e50;">Chào mừng bạn đến với QuizStudy!</h2>
+                    <p class="lead text-muted mt-3">
+                        Nền tảng của bạn để làm chủ kiến thức thông qua các bộ đề thi trắc nghiệm đa dạng.
+                    </p>
+                    <p>
+                        Cho dù bạn đang chuẩn bị cho một kỳ thi quan trọng hay chỉ muốn trau dồi kỹ năng, chúng tôi đều có thứ bạn cần.
+                        Hãy bắt đầu bằng cách khám phá các môn học yêu thích bên dưới hoặc tìm ngay một bộ đề nổi bật.
+                    </p>
+
+                    <a href="#subjectCarousel" class="btn btn-primary btn-lg mt-2">
+                        <i class="fa-solid fa-book-open-reader me-2"></i>Khám phá Môn học
+                    </a>
+                </div>
+
+                <div class="col-lg-5 col-md-12">
+                    <img src="~/images/banners/welcome-image.jpg"
+                         alt="Học sinh đang học tập"
+                         class="img-fluid rounded shadow-lg">
+                         </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row mb-3 align-items-center">
+        <div class="col-8">
+            <h2 class="section-title">Khám phá Môn học</h2>
+        </div>
+        <div class="col-4 text-end">
+            <a asp-page="/Customer/Subjects/Index" class="btn btn-outline-primary btn-sm">
+                Xem tất cả <i class="fa-solid fa-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+
+    @if (Model.SubjectList != null && Model.SubjectList.Any())
+    {
+        <div class="position-relative">
+            <div id="subjectCarousel" class="d-flex overflow-hidden position-relative">
+                @foreach (var subject in Model.SubjectList)
+                {
+                    <div class="col-md-3 col-6 flex-shrink-0 p-2">
+                        <div class="card subject-carousel-card h-100 text-center">
+                            <a asp-page="/Customer/SubjectQuizzes/Index"
+                               asp-route-id="@subject.SubjectID"
+                               class="card-body text-decoration-none d-flex flex-column justify-content-center align-items-center">
+                                <i class="fa-solid fa-book-open-reader card-icon text-primary mb-3" style="font-size: 2rem;"></i>
+                                <h6 class="card-title text-dark">@subject.SubjectName</h6>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            @if (Model.SubjectList.Count > 4)
+            {
+                <button id="prevBtn"
+                        class="carousel-control-prev custom-btn btn btn-dark rounded-circle shadow position-absolute top-50 start-0 translate-middle-y ms-2"
+                        type="button"
+                        style="width: 45px; height: 45px; opacity: 0.9;
+                                   background-color: rgba(0,0,0,0.5);
+                                   border: none;
+                                   transition: background-color 0.3s;"
+                        onmouseover="this.style.backgroundColor='rgba(0,0,0,0.85)'"
+                        onmouseout="this.style.backgroundColor='rgba(0,0,0,0.5)'"
+                        onfocus="this.style.backgroundColor='rgba(0,0,0,0.5)'"
+                        onblur="this.style.backgroundColor='rgba(0,0,0,0.5)'">
+                    <i class="fa-solid fa-chevron-left text-white fs-5"></i>
+                </button>
+
+                <button id="nextBtn"
+                        class="carousel-control-next custom-btn btn btn-dark rounded-circle shadow position-absolute top-50 end-0 translate-middle-y me-2"
+                        type="button"
+                        style="width: 45px; height: 45px; opacity: 0.9;
+                                   background-color: rgba(0,0,0,0.5);
+                                   border: none;
+                                   transition: background-color 0.3s;"
+                        onmouseover="this.style.backgroundColor='rgba(0,0,0,0.85)'"
+                        onmouseout="this.style.backgroundColor='rgba(0,0,0,0.5)'"
+                        onfocus="this.style.backgroundColor='rgba(0,0,0,0.5)'"
+                        onblur="this.style.backgroundColor='rgba(0,0,0,0.5)'">
+                    <i class="fa-solid fa-chevron-right text-white fs-5"></i>
+                </button>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-muted">Chưa có môn học nào để hiển thị.</p>
+    }
+</div>
+
+
+<div class="container mt-5">
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <h2 class="section-title">Bộ đề thi nổi bật</h2>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        @if (Model.QuizList.Any())
+        {
+            @foreach (var quiz in Model.QuizList)
+            {
+                <div class="col-md-4 col-sm-6">
+                    <partial name="Shared/_QuizCard" model="quiz" />
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <p class="text-center text-muted">Chưa có bộ đề nào để hiển thị.</p>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="container text-center mt-4 mb-2">
+    <small class="text-muted">@ViewData["SystemVersion"]</small>
+</div>
+
+@section Scripts {
+    @Html.AntiForgeryToken()
+            <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.save-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.preventDefault(); 
+
+                    const quizId = btn.dataset.quizId;
+                    const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+                    const token = tokenInput ? tokenInput.value : '';
+
+                    try {
+                        const response = await fetch(`/Index?handler=ToggleSave`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'RequestVerificationToken': token
+                            },
+                            body: JSON.stringify({
+                                quizId: parseInt(quizId),
+                                returnUrl: window.location.pathname + window.location.search
+                            })
+                        });
+
+                        if (!response.ok) throw new Error('Request failed');
+
+                        const result = await response.json();
+                        const icon = btn.querySelector('i');
+
+                        if (result.success) {
+                            if (result.saved) {
+                                btn.classList.remove('btn-outline-secondary');
+                                btn.classList.add('btn-outline-danger');
+                                icon.classList.remove('fa-regular');
+                                icon.classList.add('fa-solid');
+                                btn.title = 'Bỏ lưu';
+                            } else {
+                                btn.classList.remove('btn-outline-danger');
+                                btn.classList.add('btn-outline-secondary');
+                                icon.classList.remove('fa-solid');
+                                icon.classList.add('fa-regular');
+                                btn.title = 'Lưu xem sau';
+                            }
+
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'success',
+                                title: result.saved ? 'Đã lưu bộ đề thành công!' : 'Đã bỏ lưu bộ đề.',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                            });
+
+                        } else {
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'error',
+                                title: result.message || 'Có lỗi xảy ra.',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                            });
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Không thể gửi yêu cầu đến máy chủ.',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                });
+            });
+
+                document.querySelectorAll('.take-exam-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+
+                    const targetUrl = btn.dataset.url;
+                    const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+                    const token = tokenInput ? tokenInput.value : '';
+
+                    try {
+                        const response = await fetch(`/Index?handler=CheckLogin`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'RequestVerificationToken': token
+                            }
+                        });
+
+                        if (!response.ok) throw new Error('Network response was not ok');
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            window.location.href = targetUrl;
+                        } else {
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'warning',
+                                title: result.message || 'Bạn cần đăng nhập.',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                            });
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Lỗi kết nối đến máy chủ.',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
+    <script>
+        const bannerCarousel = document.getElementById('bannerCarousel');
+        const thumbs = document.querySelectorAll('.carousel-indicators-thumb button');
+
+        bannerCarousel.addEventListener('slid.bs.carousel', function (event) {
+            thumbs.forEach(btn => btn.classList.remove('active'));
+            thumbs[event.to].classList.add('active');
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const carousel = document.getElementById("subjectCarousel");
+            const prevBtn = document.getElementById("prevBtn");
+            const nextBtn = document.getElementById("nextBtn");
+            if (!carousel) return;
+
+            const visibleItems = 4;
+            const items = Array.from(carousel.children);
+            const totalItems = items.length;
+            if (totalItems === 0) return;
+
+            items.forEach(it => {
+                it.style.flex = "0 0 25%";
+                it.style.boxSizing = "border-box";
+            });
+
+            let position = 0;
+
+            function getItemWidth() {
+                return Math.round(items[position].getBoundingClientRect().width);
+            }
+
+            function slideTo(index) {
+                const itemWidth = getItemWidth();
+                carousel.scrollTo({
+                    left: itemWidth * index,
+                    behavior: "smooth"
+                });
+            }
+
+            function next() {
+                if (position < totalItems - visibleItems) {
+                    position++;
+                    slideTo(position);
+                }
+            }
+
+            function prev() {
+                if (position > 0) {
+                    position--;
+                    slideTo(position);
+                }
+            }
+
+            nextBtn?.addEventListener("click", function (e) {
+                e.preventDefault();
+                next();
+            });
+
+            prevBtn?.addEventListener("click", function (e) {
+                e.preventDefault();
+                prev();
+            });
+
+            window.addEventListener("resize", () => {
+                slideTo(position);
+            });
+        });
+    </script>
+}

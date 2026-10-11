@@ -1,0 +1,14 @@
+﻿@model DALTWNC_QUIZ.Models.ViewModels.DashboardStatsViewModel
+@using DALTWNC_QUIZ.Models.ViewModels
+
+<div class="row g-3">
+    <partial name="_DashboardCard" model='new DashboardCard("Tổng User", @Model.TotalUsers.ToString(), "fa-users",     "primary",     "/Admin/User/Index")' />
+    <partial name="_DashboardCard" model='new DashboardCard("Tổng Bộ đề", @Model.TotalQuizzes.ToString(), "fa-list-check",       "success",     "/Admin/Quizzes/Index")' />
+    <partial name="_DashboardCard" model='new DashboardCard("Lượt làm bài", @Model.TotalExamResults.ToString("N0"), "fa-chart-line",     "warning",     "#")' />
+    <partial name="_DashboardCard" model='new DashboardCard("Đánh giá TB", @Model.AverageRatingText, "fa-star-half-alt", "danger", "#")' />
+
+    <partial name="_DashboardCard" model='new DashboardCard("Tổng Môn học", @Model.TotalSubjects.ToString("N0"), "fa-book",     "info",     "/Admin/Subject/Index")' />
+    <partial name="_DashboardCard" model='new DashboardCard("Tổng Danh mục", @Model.TotalCategories.ToString("N0"), "fa-tags",       "secondary",       "/Admin/QuestionCategories/Index")' />
+    <partial name="_DashboardCard" model='new DashboardCard("Tổng Câu hỏi", @Model.TotalQuestions.ToString("N0"), "fa-question-circle",       "success",     "/Admin/Quizzes/Index")' />
+    <partial name="_DashboardCard" model='new DashboardCard("Bình luận Chờ duyệt", @Model.TotalCommentsAwaitingApproval.ToString("N0"), "fa-comments",       "warning",     "/Admin/Comments/Index")' />
+</div>

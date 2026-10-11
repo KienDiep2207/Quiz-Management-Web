@@ -1,0 +1,94 @@
+﻿@page
+@model DALTWNC_QUIZ.Pages.Admin.Quizzes.CreateModel
+@{
+    ViewData["Title"] = "Tạo Bộ đề mới";
+}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">@ViewData["Title"]</h1>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header"><h5 class="mb-0">Thông tin Bộ đề</h5></div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-8">
+                <form method="post" asp-page-handler="CreateQuiz">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Quiz.QuizTitle" class="form-label">Tên Bộ đề</label>
+                        <input asp-for="Quiz.QuizTitle" class="form-control" required />
+                        <span asp-validation-for="Quiz.QuizTitle" class="text-danger"></span>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="SubjectFilterId" class="form-label">Chọn Môn học</label>
+                            <select name="SubjectFilterId" id="SubjectFilterId" asp-for="SubjectFilterId" asp-items="Model.SubjectSL" class="form-select" required>
+                                <option value="0">-- Vui lòng chọn Môn học --</option>
+                            </select>
+                            <span asp-validation-for="SubjectFilterId" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Quiz.TotalQuestions" class="form-label">Số lượng Câu hỏi</label>
+                            <input asp-for="Quiz.TotalQuestions" type="number" min="1" class="form-control" required />
+                            <span asp-validation-for="Quiz.TotalQuestions" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Quiz.Description" class="form-label">Mô tả (nếu có)</label>
+                        <textarea asp-for="Quiz.Description" class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input asp-for="Quiz.IsDynamic" class="form-check-input" type="checkbox" id="isDynamicCheck" />
+                        <label asp-for="Quiz.IsDynamic" class="form-check-label">Đây là bộ đề tự động (random câu hỏi)</label>
+                        <div class="form-text mt-1">
+                            Nếu check, hệ thống sẽ tự random câu hỏi từ ngân hàng và không cần bước "Chọn câu hỏi".
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input asp-for="Quiz.IsPublic" class="form-check-input" type="checkbox" />
+                        <label asp-for="Quiz.IsPublic" class="form-check-label">Công khai bộ đề này</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="submitButton">
+                        <i class="fa-solid fa-arrow-right me-2"></i>
+                        <span id="submitButtonText">Tiếp tục (Chọn Câu hỏi)</span>
+                    </button>
+                    <a asp-page="Index" class="btn btn-secondary">Hủy</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var checkbox = document.getElementById('isDynamicCheck');
+            var buttonText = document.getElementById('submitButtonText');
+
+            var totalQuestionsLabel = document.querySelector('label[for="Quiz_TotalQuestions"]');
+            var defaultLabel = totalQuestionsLabel.textContent;
+
+            function toggleQuizType() {
+                if (checkbox.checked) {
+                    buttonText.textContent = 'Tạo & Hoàn tất';
+                    totalQuestionsLabel.textContent = 'Số lượng câu hỏi (Tự động)';
+                } else {
+                    buttonText.textContent = 'Tiếp tục (Chọn Câu hỏi)';
+                    totalQuestionsLabel.textContent = 'Số lượng câu hỏi (Cố định)';
+                }
+            }
+            toggleQuizType();
+
+            checkbox.addEventListener('change', toggleQuizType);
+        });
+    </script>
+}

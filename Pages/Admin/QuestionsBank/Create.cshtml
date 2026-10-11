@@ -1,0 +1,83 @@
+﻿@page
+@model DALTWNC_QUIZ.Pages.Admin.QuestionsBank.CreateModel
+@using DALTWNC_QUIZ.Models
+@{
+    ViewData["Title"] = "Tạo Câu hỏi mới";
+    ViewData["ActivePage"] = "QuestionsBank";
+}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">@ViewData["Title"]</h1>
+</div>
+
+<form method="post">
+    <div class="card shadow-sm mb-4">
+        <div class="card-header"><h5 class="mb-0">Thông tin Câu hỏi</h5></div>
+        <div class="card-body">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <label asp-for="Question.SubjectID" class="form-label">Chọn Môn học</label>
+                    <select asp-for="Question.SubjectID" asp-items="Model.SubjectSL" class="form-select" required>
+                        <option value="0">-- Chọn Môn học --</option>
+                    </select>
+                    <span asp-validation-for="Question.SubjectID" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Question.CategoryID" class="form-label">Danh mục (Cấp độ)</label>
+                    <select asp-for="Question.CategoryID" asp-items="Model.CategorySL" class="form-select">
+                        <option value="0">-- Không chọn --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Question.QuestionText" class="form-label">Nội dung Câu hỏi</label>
+                <textarea asp-for="Question.QuestionText" class="form-control" rows="5" required></textarea>
+                <span asp-validation-for="Question.QuestionText" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-header"><h5 class="mb-0">Các lựa chọn (Đáp án)</h5></div>
+        <div class="card-body">
+            @for (int i = 0; i < Model.Choices.Count; i++)
+            {
+                <input type="hidden" asp-for="Choices[i].IsCorrect" />
+
+                <div class="row g-3 mb-3 align-items-center">
+                    <div class="col-auto">
+                        <label class="form-label fw-bold">@(i + 1).</label>
+                    </div>
+                    <div class="col">
+                        <input asp-for="Choices[i].ChoiceText" class="form-control" placeholder="Nhập nội dung đáp án @(i + 1)" />
+                        <span asp-validation-for="Choices[i].ChoiceText" class="text-danger"></span>
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-check">
+                            <input name="CorrectChoiceIndex"
+                                   id="is-correct-@i"
+                                   value="@i"
+                            @(Model.CorrectChoiceIndex == i ? "checked" : "")
+                                   class="form-check-input correct-radio"
+                                   type="radio"
+                            @(i == 0 ? "required" : "") />
+                            <label for="is-correct-@i" class="form-check-label">Là đáp án đúng</label>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="mt-4 mb-5">
+        <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-save me-2"></i> Lưu Câu hỏi
+        </button>
+        <a asp-page="Index" class="btn btn-outline-secondary">
+            <i class="fa-solid fa-ban me-2"></i> Hủy
+        </a>
+    </div>
+</form>

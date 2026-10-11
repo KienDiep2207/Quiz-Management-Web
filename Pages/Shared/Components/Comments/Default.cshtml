@@ -1,0 +1,32 @@
+﻿@model DALTWNC_QUIZ.Pages.Shared.Components.Comments.CommentsComponentViewModel
+
+<div>
+    <h3 class="section-title mt-5">Bình luận (@Model.ExistingComments.Count)</h3>
+
+    <div class="comment-form-wrapper" id="comment-form-container">
+        <textarea id="comment-input" class="form-control" placeholder="Viết bình luận của bạn..." rows="3"></textarea>
+
+        <div id="comment-controls">
+            <button class="btn btn-sm btn-secondary" id="cancel-comment-btn">Hủy</button>
+            <button class="btn btn-sm btn-primary" id="submit-comment-btn" onclick="submitComment(@Model.QuizId)">Gửi</button>
+        </div>
+    </div>
+
+    <div class="comment-list-wrapper">
+        @if (!Model.ExistingComments.Any())
+        {
+            <p class="text-muted text-center mb-0">Chưa có bình luận nào. Hãy là người đầu tiên!</p>
+        }
+
+        @foreach (var comment in Model.ExistingComments)
+        {
+            <div class="comment-item">
+                <strong class="comment-author">@comment.UserName</strong>
+                <span class="comment-date text-muted ms-2" style="font-size: 0.8rem;">
+                    @comment.CreatedDate.ToString("dd/MM/yyyy 'lúc' HH:mm")
+                </span>
+                <p class="mb-0 mt-1">@Html.Raw(comment.Content.Replace("\n", "<br />"))</p>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,273 @@
+﻿@using Microsoft.EntityFrameworkCore
+@using DALTWNC_QUIZ.Data
+@inject ApplicationDbContext DbContext
+@inject IJSRuntime JSRuntime
+@implements IDisposable
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-bold text-secondary">
+            <i class="fa-solid fa-chart-line me-2"></i>Hiệu suất: @GetFilterLabel()
+        </h5>
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-sm @(activeFilter == "7" ? "btn-primary" : "btn-outline-secondary")" @onclick='() => ChangeFilter("7")'>7 Ngày</button>
+            <button type="button" class="btn btn-sm @(activeFilter == "14" ? "btn-primary" : "btn-outline-secondary")" @onclick='() => ChangeFilter("14")'>14 Ngày</button>
+            <button type="button" class="btn btn-sm @(activeFilter == "30" ? "btn-primary" : "btn-outline-secondary")" @onclick='() => ChangeFilter("30")'>30 Ngày</button>
+        </div>
+    </div>
+
+    <div class="card-body">
+        @if (isLoading)
+        {
+            <div class="d-flex justify-content-center align-items-center" style="height: 350px;">
+                <div class="spinner-border text-primary" role="status"></div>
+            </div>
+        }
+        else
+        {
+            <div style="position: relative; height: 350px; width: 100%;">
+                <canvas id="recentActivityChart"></canvas>
+            </div>
+            <div class="text-center mt-2 text-muted fst-italic small">
+                <i class="fa-solid fa-hand-pointer me-1"></i>Click vào cột để xem chi tiết bên dưới
+            </div>
+        }
+    </div>
+</div>
+
+@if (showDetails)
+{
+    <div class="card shadow-sm border-0 mb-5 fade-in-up">
+        <div class="card-header bg-light py-2 d-flex justify-content-between align-items-center">
+            <h6 class="mb-0 fw-bold text-primary">
+                <i class="fa-solid fa-list-check me-2"></i>Chi tiết ngày @selectedDateStr
+            </h6>
+            <button class="btn btn-sm btn-close" @onclick="CloseDetails" title="Đóng chi tiết"></button>
+        </div>
+
+        <div class="card-body p-0">
+            @if (selectedDateDetails != null && selectedDateDetails.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead class="table-light small text-muted">
+                            <tr>
+                                <th class="ps-4">Thí sinh</th>
+                                <th>Bài thi</th>
+                                <th>Thời gian</th>
+                                <th class="text-center">Điểm số</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in selectedDateDetails)
+                            {
+                                <tr>
+                                    <td class="ps-4 fw-bold text-dark">
+                                        <i class="fa-solid fa-user-circle text-secondary me-2"></i>@item.CustomerName
+                                    </td>
+                                    <td class="text-primary">@item.QuizTitle</td>
+                                    <td class="text-muted small">
+                                        <i class="fa-regular fa-clock me-1"></i>@item.TimeStr
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge rounded-pill @(item.Score >= 5 ? "bg-success" : "bg-danger")" style="width: 60px;">
+                                            @item.Score đ
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="p-4 text-center text-muted">
+                    <i class="fa-solid fa-inbox fa-2x mb-2"></i>
+                    <p>Không có dữ liệu chi tiết cho ngày này.</p>
+                </div>
+            }
+        </div>
+
+        <div class="card-footer bg-white text-center py-2">
+            <button class="btn btn-sm btn-outline-secondary px-4" @onclick="CloseDetails">
+                <i class="fa-solid fa-chevron-up me-1"></i> Ẩn chi tiết
+            </button>
+        </div>
+    </div>
+
+    <style>
+        .fade-in-up {
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+}
+
+@code {
+    public class QuizDetailDTO
+    {
+        public string CustomerName { get; set; } = "";
+        public string QuizTitle { get; set; } = "";
+        public string TimeStr { get; set; } = "";
+        public double Score { get; set; }
+    }
+
+    private bool isLoading = true;
+    private string activeFilter = "7";
+    private bool _isDisposed = false;
+    private DotNetObjectReference<RecentActivityChart>? objRef;
+
+    private bool showDetails = false;
+    private string selectedDateStr = "";
+    private List<QuizDetailDTO> selectedDateDetails = new();
+    private List<DateTime> currentChartDates = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            objRef = DotNetObjectReference.Create(this);
+            await LoadChartData();
+        }
+    }
+
+    [JSInvokable]
+    public async Task HandleChartClick(int index)
+    {
+        if (_isDisposed || isLoading) return;
+
+        try
+        {
+            if (index >= 0 && index < currentChartDates.Count)
+            {
+                var clickedDate = currentChartDates[index];
+                selectedDateStr = clickedDate.ToString("dd/MM/yyyy");
+
+                var details = await DbContext.QuizAttempts
+                    .AsNoTracking()
+                    .Where(q => q.StartTime.Date == clickedDate)
+                    .OrderByDescending(q => q.StartTime)
+                    .Select(q => new QuizDetailDTO
+                        {
+                            CustomerName = q.Customer.Username ?? "Unknown",
+                            QuizTitle = q.Quiz.QuizTitle,
+                            TimeStr = q.StartTime.ToString("HH:mm"),
+                            Score = (double)(q.Score ?? 0)
+                        })
+                    .ToListAsync();
+
+                if (!_isDisposed)
+                {
+                    selectedDateDetails = details;
+                    showDetails = true;
+                    StateHasChanged();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[Click Error]: {ex.Message}");
+        }
+    }
+
+    private void CloseDetails() => showDetails = false;
+
+    private async Task ChangeFilter(string days)
+    {
+        if (activeFilter == days) return;
+        activeFilter = days;
+        isLoading = true;
+        showDetails = false;
+        StateHasChanged();
+        await Task.Delay(200);
+        await LoadChartData();
+    }
+
+    private string GetFilterLabel() => activeFilter switch { "7" => "7 ngày qua", "14" => "2 tuần qua", "30" => "1 tháng qua", _ => "" };
+
+    private async Task LoadChartData()
+    {
+        try
+        {
+            if (_isDisposed) return;
+
+            int daysBack = int.Parse(activeFilter);
+            var startDate = DateTime.Today.AddDays(-(daysBack - 1));
+
+            var rawData = await DbContext.QuizAttempts
+                .AsNoTracking()
+                .Where(r => r.StartTime >= startDate)
+                .GroupBy(r => r.StartTime.Date)
+                .Select(g => new
+                {
+                    Date = g.Key,
+                    Count = g.Count(),
+                    AvgScore = g.Average(x => (double?)x.Score)
+                })
+                .ToListAsync();
+
+            if (_isDisposed) return;
+
+            var labels = new List<string>();
+            var attemptsData = new List<int>();
+            var scoreData = new List<double>();
+
+            currentChartDates.Clear();
+
+            for (int i = daysBack - 1; i >= 0; i--)
+            {
+                var date = DateTime.Today.AddDays(-i);
+                currentChartDates.Add(date);
+                labels.Add(date.ToString("dd/MM"));
+
+                var record = rawData.FirstOrDefault(r => r.Date == date);
+                if (record != null)
+                {
+                    attemptsData.Add(record.Count);
+                    scoreData.Add(Math.Round(record.AvgScore ?? 0, 1));
+                }
+                else
+                {
+                    attemptsData.Add(0);
+                    scoreData.Add(0);
+                }
+            }
+
+            isLoading = false;
+            StateHasChanged();
+            await Task.Delay(100);
+
+            if (!_isDisposed && objRef != null)
+            {
+                try
+                {
+                    await JSRuntime.InvokeVoidAsync("renderMixedChart", objRef, "recentActivityChart", labels, attemptsData, scoreData);
+                }
+                catch { }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[Load Data Error]: {ex.Message}");
+            if (!_isDisposed) { isLoading = false; StateHasChanged(); }
+        }
+    }
+
+    public void Dispose()
+    {
+        _isDisposed = true;
+        objRef?.Dispose();
+    }
+}

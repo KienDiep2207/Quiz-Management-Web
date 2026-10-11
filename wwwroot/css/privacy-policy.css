@@ -1,0 +1,74 @@
+﻿/* --- TÙY CHỈNH CHUNG CHO TRANG PRIVACY --- */
+
+/* Tiêu đề chính của trang (Privacy Policy) */
+.privacy-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50; /* Màu tiêu đề đậm */
+    margin-bottom: 10px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0; /* Đường kẻ mỏng */
+}
+
+/* Dòng "Cập nhật lần cuối" */
+.privacy-last-updated {
+    font-size: 0.9rem;
+    color: #6c757d; /* Màu xám mờ */
+    font-style: italic;
+    margin-bottom: 2rem;
+}
+
+/* Khối nội dung chính, tái sử dụng style 'card' */
+.privacy-policy-content {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 2rem 2.5rem; /* Tăng padding cho dễ đọc */
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+    /* Tiêu đề cho các mục lớn (H2) */
+    .privacy-policy-content h2 {
+        font-weight: 700;
+        color: #2c3e50;
+        position: relative;
+        padding-bottom: 10px;
+        margin-top: 1.5rem; /* Tạo khoảng cách với nội dung ở trên */
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #198754; /* Dùng màu xanh lá cây làm điểm nhấn */
+    }
+
+        /* Mục đầu tiên không cần margin-top */
+        .privacy-policy-content h2:first-of-type {
+            margin-top: 0;
+        }
+
+    /* Tiêu đề cho các mục con (H3) */
+    .privacy-policy-content h3 {
+        font-weight: 600;
+        color: #34495e;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Nội dung văn bản (P) */
+    .privacy-policy-content p {
+        font-size: 1rem;
+        line-height: 1.7; /* Tăng chiều cao dòng để dễ đọc */
+        color: #555;
+        margin-bottom: 1rem;
+    }
+
+    /* Căn chỉnh cho danh sách (UL/OL) */
+    .privacy-policy-content ul,
+    .privacy-policy-content ol {
+        line-height: 1.7;
+        color: #555;
+        margin-left: 20px;
+        padding-left: 15px;
+        margin-bottom: 1rem;
+    }
+
+    .privacy-policy-content li {
+        margin-bottom: 0.5rem;
+    }

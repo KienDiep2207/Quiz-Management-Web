@@ -1,0 +1,41 @@
+﻿@page
+@model DALTWNC_QUIZ.Pages.Admin.QuestionCategories.CreateModel
+@{
+    ViewData["Title"] = "Tạo Danh mục mới";
+}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">@ViewData["Title"]</h1>
+
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">Thông tin Danh mục</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="NewCategory.CategoryName" class="form-label">Tên Danh mục</label>
+                        <input asp-for="NewCategory.CategoryName" class="form-control" placeholder="Ví dụ: Nhận biết, Vận dụng cao..." required />
+                        <span asp-validation-for="NewCategory.CategoryName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-save me-2"></i> Lưu lại
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary mb-3" onclick="history.back()">
+                            <i class="bi bi-arrow-left"></i> Quay lại
+                        </button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

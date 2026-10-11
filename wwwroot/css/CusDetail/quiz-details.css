@@ -1,0 +1,432 @@
+﻿/* --- Kế thừa style tiêu đề từ trang chủ --- */
+/*.section-title {
+    font-weight: 700;
+    color: #2c3e50;
+    position: relative;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background-color: #198754;
+        border-radius: 2px;
+    }*/
+
+/* --- TÙY CHỈNH CHUNG CHO TRANG DETAILS --- */
+/*.quiz-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 0.75rem;
+}
+
+    .quiz-actions .btn {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+    }
+
+.quiz-info-block {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.info-badge-wrapper {
+    margin-bottom: 0.5rem;
+}
+
+    .info-badge-wrapper .quiz-badge {
+        font-size: 0.85rem;
+        padding: 0.4em 0.7em;
+        font-weight: 600;
+    }
+
+.info-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+}
+
+.info-description {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    padding-bottom: 0.6rem;
+}
+
+.info-separator {
+    margin: 0.75rem 0;
+    color: #e0e0e0;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    padding: 0.4rem 0;
+}
+
+.info-label {
+    color: #212529;
+    font-weight: 600;*/
+    /* Giữ nguyên 0.95rem hoặc thay đổi tùy ý */
+    /*font-size: 1.1rem;
+    min-width: 170px;
+    flex-shrink: 0;
+}
+
+.info-value {
+    color: #6c757d;
+    font-weight: 500;*/ /* Chữ thường */
+    /*font-size: 1.1rem;
+}*/
+
+/* --- CSS CHO RATING VÀ COMMENT --- */
+
+/* 1. Star Rating Input (Form) */
+/* LƯU Ý: Đoạn CSS này dùng cho input radio. 
+   Tuy nhiên, logic AJAX của chúng ta dùng 'onclick' trên <i>
+   nên các style .star-rating-input:checked sẽ không được dùng.
+   Chúng ta sẽ dựa vào style .rating-stars-display ở dưới.
+*/
+/*.star-rating-input {
+    display: inline-block;
+    direction: rtl;
+}
+
+    .star-rating-input input[type="radio"] {
+        display: none;
+    }
+
+    .star-rating-input label {
+        font-size: 2rem;
+        color: #ddd;
+        cursor: pointer;
+        transition: color 0.2s;
+        padding: 0 0.1em;
+    }
+
+        .star-rating-input input[type="radio"]:checked ~ label,
+        .star-rating-input label:hover,
+        .star-rating-input label:hover ~ label {
+            color: #ffc107;
+        }*/
+/* Nút "Lưu" của form Rating */
+/*#ratingForm button[type="submit"] {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+}*/
+
+/* 2. Rating Summary (Component) */
+/*.rating-avg-number {
+    font-size: 2.5rem;*/ /* Thu nhỏ */
+    /*font-weight: 700;
+    color: #212529;
+}
+
+.rating-stars-display {
+    font-size: 1rem;*/ /* Thu nhỏ */
+    /*color: #ffc107;
+    margin-bottom: 0.5rem;
+}*/
+    /* Thêm style cho các ngôi sao (giống ảnh 1) */
+    /*.rating-stars-display .fa-star {
+        cursor: pointer;
+        transition: transform 0.1s ease;
+        padding: 0 2px;
+    }
+
+        .rating-stars-display .fa-star:hover {
+            transform: scale(1.2);
+        }*/
+    /* Style cho sao rỗng (chưa chọn) */
+    /*.rating-stars-display .fa-regular {
+        color: #ddd;
+    }
+
+.rating-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.rating-bar-label {
+    flex-shrink: 0;
+    width: 50px;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.rating-bar-row .progress {
+    height: 8px;*/ /* Làm mỏng */
+    /*flex-grow: 1;
+}
+
+.rating-bar-percent {
+    flex-shrink: 0;
+    width: 40px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}*/
+
+/* 3. Comment Form (Ẩn/Hiện - Đã sửa vị trí nút) */
+/*.comment-form-wrapper {
+    position: relative;*/ /* BẮT BUỘC: Để làm 'cha' cho các nút */
+    /*background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+    .comment-form-wrapper textarea {
+        transition: border-color 0.2s ease;
+        border: 1px solid #ced4da;*/
+        /* QUAN TRỌNG: Thêm padding-bottom để chừa chỗ cho nút */
+        /*padding-bottom: 50px;
+    }
+
+        .comment-form-wrapper textarea:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+#comment-controls {*/
+    /* Đặt nút VÀO TRONG, góc phải dưới */
+    /*position: absolute;
+    bottom: 20px;*/ /* 1rem padding + ~4px lề */
+    /*right: 20px;*/ /* 1rem padding + ~4px lề */
+    /* Các style cũ vẫn giữ */
+    /*display: none;
+    text-align: right;
+    margin-top: 0;*/ /* Không cần margin-top nữa */
+    /*gap: 0.5rem;
+}*/
+
+/* 4. Comment List (Component) */
+/*.comment-list-wrapper {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-top: 1.5rem;*/ /* Tách khối */
+/*}
+
+.comment-item {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+    .comment-item:last-child {
+        margin-bottom: 0;
+    }
+
+.comment-author {
+    font-weight: 700;*/ /* Làm rõ tên */
+    /*color: #212529;
+}*/
+
+/* PHẦN ĐÃ BỊ XÓA BỎ (do lặp lại) */
+/* (Khối "CSS MỚI CHO RATING" đã bị xóa) */
+
+/* --- Kế thừa style tiêu đề từ trang chủ --- */
+.section-title {
+    font-weight: 700;
+    color: #2c3e50;
+    position: relative;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background-color: #198754; /* Màu xanh lá cây */
+        border-radius: 2px;
+    }
+
+/* --- KHỐI INFO CHÍNH (TÁI SỬ DỤNG CHO CẢ RATING) --- */
+.quiz-info-block {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.info-badge-wrapper {
+    margin-bottom: 0.5rem;
+}
+
+    .info-badge-wrapper .quiz-badge {
+        font-size: 0.85rem;
+        padding: 0.4em 0.7em;
+        font-weight: 600;
+    }
+
+.info-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+}
+
+.info-description {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    padding-bottom: 0.6rem;
+}
+
+.info-separator {
+    margin: 0.75rem 0;
+    color: #e0e0e0;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    padding: 0.4rem 0;
+}
+
+.info-label {
+    color: #212529;
+    font-weight: 600;
+    font-size: 1.1rem;
+    min-width: 170px;
+    flex-shrink: 0;
+}
+
+.info-value {
+    color: #6c757d;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+/* --- CSS CHO RATING (BÊN TRONG .quiz-info-block) --- */
+.rating-avg-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #212529;
+}
+
+.rating-stars-display {
+    font-size: 1rem;
+    color: #ffc107;
+    margin-bottom: 0.5rem;
+}
+
+    .rating-stars-display .fa-star {
+        cursor: pointer;
+        transition: transform 0.1s ease;
+        padding: 0 2px;
+    }
+
+        .rating-stars-display .fa-star:hover {
+            transform: scale(1.2);
+        }
+
+    .rating-stars-display .fa-regular {
+        color: #ddd;
+    }
+
+.rating-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.rating-bar-label {
+    flex-shrink: 0;
+    width: 50px;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.rating-bar-row .progress {
+    height: 8px;
+    flex-grow: 1;
+}
+
+.rating-bar-percent {
+    flex-shrink: 0;
+    width: 40px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* --- CSS CHO COMMENT (ĐÃ CÓ STYLE CARD RIÊNG) --- */
+/*
+   Phần "Bình luận" (Comments) đã tự có style 
+   từ ViewComponent của nó (comment-form-wrapper, v.v.)
+*/
+.comment-form-wrapper {
+    position: relative;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+    .comment-form-wrapper textarea {
+        transition: border-color 0.2s ease;
+        border: 1px solid #ced4da;
+        padding-bottom: 50px; /* Chừa chỗ cho nút */
+    }
+
+        .comment-form-wrapper textarea:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+#comment-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    text-align: right;
+    margin-top: 0;
+    gap: 0.5rem;
+}
+
+.comment-list-wrapper {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-top: 1.5rem;
+}
+
+.comment-item {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+    .comment-item:last-child {
+        margin-bottom: 0;
+    }
+
+.comment-author {
+    font-weight: 700;
+    color: #212529;
+}

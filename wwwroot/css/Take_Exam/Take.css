@@ -1,0 +1,228 @@
+﻿/* -------------------------
+   STYLE CHUNG CHO GIAO DIỆN LÀM BÀI
+--------------------------*/
+
+/* Nút câu hỏi (trên thanh điều hướng bên phải) */
+/*.question-btn {
+    width: 50px;
+    height: 50px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+}*/
+
+    /* Khi đã chọn (answered) */
+    /*.question-btn.btn-success {
+        color: white !important;
+    }*/
+
+/* Panel chứa danh sách nút câu hỏi */
+/*.question-panel {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+}*/
+
+/* Danh sách câu hỏi */
+/*.question-list {
+    max-width: 280px;
+    margin: 0 auto;
+}*/
+
+/* Card câu hỏi */
+/*.question-card {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: box-shadow 0.2s ease, transform 0.1s ease;
+    position: relative;
+}
+
+    .question-card:hover {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        transform: translateY(-2px);
+    }
+
+    .question-card strong {
+        color: #198754;*/ /* Xanh Bootstrap */
+    /*}*/
+
+/* Input chọn đáp án */
+/*.form-check-input:checked {
+    background-color: #198754;
+    border-color: #198754;
+}*/
+
+/* Label khi input bị disabled */
+/*.answer-option[disabled] + label {
+    color: #aaa;
+    cursor: not-allowed;
+}*/
+
+/* -------------------------
+   STYLE CHO FLAG (CỜ ĐÁNH DẤU)
+--------------------------*/
+
+/* Nút cờ trên từng câu */
+/*.flag-btn {
+    font-size: 20px;
+    border-radius: 8px;
+    transition: 0.2s;
+}*/
+
+    /* Khi đã flag */
+    /*.flag-btn.flagged {
+        background-color: #ffc107;*/ /* Màu vàng khi đã flag */
+        /*color: #000;
+    }*/
+
+/* -------------------------
+   STYLE CHO TRẠNG THÁI FLAG TRÊN Ô CÂU HỎI
+--------------------------*/
+
+/* Khi câu hỏi được flagged mà CHƯA trả lời */
+/*.question-btn.btn-flagged {
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+    color: #000 !important;
+}*/
+
+/* Khi câu hỏi đã trả lời + flagged */
+/*.question-btn.btn-success.btn-flagged-answered {
+    border-color: #ffc107 !important;*/ /* viền vàng */
+    /*box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.25);*/ /* vòng vàng nhẹ */
+    /*color: #fff !important;
+}*/
+
+/* Khi chưa chọn gì */
+/*.question-btn.btn-outline-secondary {
+    color: #555;
+}*/
+
+/* Hiệu ứng hover */
+/*.question-btn:hover {
+    transform: scale(1.05);
+}*/
+
+/* -------------------------
+   HIỆU ỨNG CHUNG
+--------------------------*/
+
+/*.question-btn:focus,
+.flag-btn:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.3);
+}
+
+.clear-answer-btn {
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+    .clear-answer-btn:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .flag-btn:disabled,
+    .clear-answer-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }*/
+
+/* Nút câu hỏi được flag (vàng) */
+/*.btn-flagged {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+    border: 2px solid #e0a800 !important;
+}*/
+
+/* Nút câu hỏi vừa flag vừa trả lời (xanh + viền vàng) */
+/*.btn-flagged-answered {
+    background-color: #198754 !important;
+    color: #fff !important;
+    border: 2px solid #ffc107 !important;
+}*/
+/* --- STYLE CHUNG CHO GIAO DIỆN LÀM BÀI --- */
+
+/* Nút câu hỏi (trên thanh điều hướng bên phải) */
+.question-btn {
+    width: 50px;
+    height: 50px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+}
+
+    /* 1. Trạng thái ĐÃ TRẢ LỜI (Màu xanh) */
+    .question-btn.btn-success {
+        background-color: #198754 !important;
+        border-color: #198754 !important;
+        color: white !important;
+    }
+
+    /* 2. Trạng thái ĐƯỢC CẮM CỜ (Màu vàng) */
+    .question-btn.btn-flagged {
+        background-color: #ffc107 !important;
+        border-color: #ffc107 !important;
+        color: #000 !important;
+    }
+
+    /* 3. Trạng thái VỪA TRẢ LỜI + VỪA CẮM CỜ (Nền xanh + Viền vàng đậm) */
+    .question-btn.btn-flagged-answered {
+        background-color: #198754 !important; /* Nền xanh */
+        color: #fff !important;
+        border: 3px solid #ffc107 !important; /* Viền vàng */
+        box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.5); /* Hiệu ứng tỏa sáng vàng */
+    }
+
+/* Card câu hỏi */
+.question-card {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative; /* Quan trọng để đặt cờ */
+}
+
+    .question-card:hover {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+
+/* --- STYLE CHO NÚT CỜ (FLAG) TRÊN CÂU HỎI --- */
+.flag-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    border: 1px solid #dee2e6; /* Viền nhẹ cho dễ nhìn */
+    background: #fff;
+    font-size: 1.2rem;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+    /* Khi cờ được chọn (class .flagged) -> Nền vàng */
+    .flag-btn.flagged {
+        background-color: #ffc107 !important;
+        color: #000 !important;
+        border-color: #e0a800;
+    }
+
+    .flag-btn:hover {
+        background-color: #f8f9fa;
+    }
+
+/* Lớp bảo vệ chống copy */
+.unselectable {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}

@@ -1,0 +1,131 @@
+﻿@page
+@model DALTWNC_QUIZ.Pages.Admin.HomeModel
+@using DALTWNC_QUIZ.Models.ViewModels
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["ActivePage"] = "Dashboard";
+}
+
+<div class="pt-3 pb-2 mb-3 border-bottom d-flex justify-content-between align-items-center">
+    <h1 class="h2">Dashboard</h1>
+
+    <vc:search-bar />
+
+    <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#shareModal">
+            <i class="fa-solid fa-share-nodes"></i> Chia sẻ
+        </button>
+
+        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exportModal">
+            <i class="fa-solid fa-file-export"></i> Xuất file
+        </button>
+    </div>
+</div>
+
+@await Component.InvokeAsync("DashboardStats")
+
+<hr class="my-4 text-secondary opacity-25" />
+
+<component type="typeof(DALTWNC_QUIZ.Pages.Shared.Components.RecentActivityChart)" render-mode="Server" />
+
+<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="shareModalLabel"><i class="fa-solid fa-share-nodes"></i> Chia sẻ Dashboard</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Sao chép liên kết dưới đây để chia sẻ báo cáo:</p>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="shareLinkInput" readonly>
+                    <button class="btn btn-primary" type="button" onclick="copyToClipboard()">
+                        <i class="fa-regular fa-copy"></i> Sao chép
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exportModalLabel"><i class="fa-solid fa-file-export"></i> Tùy chọn xuất file</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form method="get">
+                <div class="modal-body">
+                    <input type="hidden" name="handler" value="Export" />
+
+                    <p class="mb-3">Vui lòng chọn mốc thời gian thống kê:</p>
+
+                    <div class="d-grid gap-2">
+                        <input type="radio" class="btn-check" name="period" id="optionDay" value="day" checked>
+                        <label class="btn btn-outline-primary text-start px-3" for="optionDay">
+                            <i class="fa-solid fa-calendar-day me-2"></i> Báo cáo Hôm nay
+                        </label>
+
+                        <input type="radio" class="btn-check" name="period" id="optionWeek" value="week">
+                        <label class="btn btn-outline-primary text-start px-3" for="optionWeek">
+                            <i class="fa-solid fa-calendar-week me-2"></i> Báo cáo Tuần này
+                        </label>
+
+                        <input type="radio" class="btn-check" name="period" id="optionMonth" value="month">
+                        <label class="btn btn-outline-primary text-start px-3" for="optionMonth">
+                            <i class="fa-solid fa-calendar-days me-2"></i> Báo cáo Tháng này
+                        </label>
+
+                        <input type="radio" class="btn-check" name="period" id="optionAll" value="all">
+                        <label class="btn btn-outline-secondary text-start px-3" for="optionAll">
+                            <i class="fa-solid fa-clock-rotate-left me-2"></i> Toàn bộ thời gian (Tổng hợp)
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-success" onclick="closeExportModal()">
+                        <i class="fa-solid fa-download"></i> Tải xuống
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var shareModal = document.getElementById('shareModal');
+        shareModal.addEventListener('show.bs.modal', function (event) {
+            var input = document.getElementById('shareLinkInput');
+            input.value = window.location.href;
+        });
+
+        function copyToClipboard() {
+            var copyText = document.getElementById("shareLinkInput");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+
+            navigator.clipboard.writeText(copyText.value).then(function () {
+                var btn = document.querySelector("#shareModal .btn-primary");
+                var originalHtml = btn.innerHTML;
+
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Đã chép!';
+                btn.classList.replace("btn-primary", "btn-success");
+
+                setTimeout(function () {
+                    btn.innerHTML = originalHtml;
+                    btn.classList.replace("btn-success", "btn-primary");
+                }, 2000);
+            });
+        }
+
+        function closeExportModal() {
+            var myModalEl = document.getElementById('exportModal');
+            var modal = bootstrap.Modal.getInstance(myModalEl);
+            setTimeout(function () { modal.hide(); }, 500);
+        }
+    </script>
+}

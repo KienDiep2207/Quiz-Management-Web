@@ -1,0 +1,39 @@
+﻿<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+    <span>Thông tin</span>
+</h6>
+<ul class="nav flex-column">
+    <li class="nav-item">
+        <a class="nav-link @(ViewBag.CurrentPage == "/Admin/Home" ? "active" : "")" asp-page="/Admin/Home">
+            <i class="fa-solid fa-home"></i> <span>Dashboard</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(ViewBag.CurrentPage == "/Admin/User/Index" ? "active" : "")" asp-page="/Admin/User/Index">
+            <i class="fa-solid fa-users"></i> <span>Quản lý User</span>
+        </a>
+    </li>
+</ul>
+
+<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+    <span>Nội dung Quiz</span>
+</h6>
+<ul class="nav flex-column">
+    <li class="nav-item"><a class="nav-link @(ViewBag.CurrentPage == "/Admin/Subject/Index" ? "active" : "")" asp-page="/Admin/Subject/Index"><i class="fa-solid fa-book"></i> <span>Môn học</span></a></li>
+    <li class="nav-item"><a class="nav-link @(ViewBag.CurrentPage == "/Admin/QuestionCategories/Index" ? "active" : "")" asp-page="/Admin/QuestionCategories/Index"><i class="fa-solid fa-tags"></i> <span>Danh mục Câu hỏi</span></a></li>
+
+    <li class="nav-item">
+        <a class="nav-link @(ViewBag.CurrentPage == "/Admin/QuestionsBank/Index" ? "active" : "")" asp-page="/Admin/QuestionsBank/Index">
+            <i class="fa-solid fa-question-circle"></i> <span>Ngân hàng Câu hỏi</span>
+        </a>
+    </li>
+    <li class="nav-item"><a class="nav-link @(ViewBag.CurrentPage == "/Admin/Quizzes/Index" ? "active" : "")" asp-page="/Admin/Quizzes/Index"><i class="fa-solid fa-list-check"></i> <span>Bộ đề thi</span></a></li>
+</ul>
+
+<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+    <span>Tương tác</span>
+</h6>
+<ul class="nav flex-column mb-2">
+    <li class="nav-item"><a class="nav-link @(ViewBag.CurrentPage == "/Admin/Results/Index" ? "active" : "")" asp-page="/Admin/Results/Index"><i class="fa-solid fa-file-signature"></i> <span>Kết quả thi</span></a></li>
+    <li class="nav-item"><a class="nav-link @(ViewBag.CurrentPage == "/Admin/Ratings/Index" ? "active" : "")" asp-page="/Admin/Ratings/Index"><i class="fa-solid fa-star"></i> <span>Đánh giá</span></a></li>
+    <li class="nav-item"><a class="nav-link @(ViewBag.CurrentPage == "/Admin/Comments/Index" ? "active" : "")" asp-page="/Admin/Comments/Index"><i class="fa-solid fa-comments"></i> <span>Bình luận</span></a></li>
+</ul>

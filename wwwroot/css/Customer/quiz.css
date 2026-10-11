@@ -1,0 +1,117 @@
+﻿/* ==================================== */
+/* === STYLES CHO CARD BỘ ĐỀ (Quiz Card) === */
+/* ==================================== */
+
+/* Bỏ gạch chân khỏi link tiêu đề */
+.card-title-link {
+    text-decoration: none;
+    color: #34495e;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+    .card-title-link:hover {
+        color: #198754; /* Màu xanh lá khi hover */
+    }
+
+/* ==================================== */
+/* === CARD BỐ CỤC CHUNG === */
+/* ==================================== */
+
+.subject-card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .subject-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Nội dung card */
+    .subject-card .card-body {
+        padding: 1.25rem;
+    }
+
+    /* Badge môn học */
+    .subject-card .badge {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    /* ==================================== */
+    /* === CARD FOOTER & NÚT HÀNH ĐỘNG === */
+    /* ==================================== */
+
+    .subject-card .card-footer.card-actions {
+        background-color: #fff;
+        border-top: 1px solid #f0f0f0;
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+/* Vùng meta thông tin */
+.card-actions .action-meta {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: #6c757d;
+}
+
+/* Nhóm nút hành động */
+.card-actions .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+
+/* ==================================== */
+/* === PHONG CÁCH RIÊNG CHO TRANG SAVED === */
+/* ==================================== */
+
+/* Làm card nổi bật nhẹ hơn để khác trang chủ */
+.page-saved .subject-card {
+    border: 1px solid #e8f5e9;
+    background-color: #fdfdfd;
+}
+
+/* Nút "Bỏ lưu" nổi bật hơn, dễ thấy */
+.page-saved .btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+    .page-saved .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+/* Thêm màu nhẹ cho badge ngày lưu */
+.page-saved .action-meta i.fa-clock {
+    color: #ffc107; /* vàng nhẹ */
+}
+
+/* Hiệu ứng hiển thị thông điệp khi không có dữ liệu */
+.page-saved .text-muted {
+    font-size: 1rem;
+    color: #888 !important;
+}
+
+/* Responsive chỉnh 3 cột -> 2 -> 1 */
+@media (max-width: 992px) {
+    .col-md-4 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 576px) {
+    .col-md-4, .col-sm-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}

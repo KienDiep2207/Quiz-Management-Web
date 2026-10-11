@@ -1,0 +1,60 @@
+﻿@page "{username?}"
+@model DALTWNC_QUIZ.Pages.Customer.Histories.HistoryModel
+@{
+    ViewData["Title"] = "Lịch sử làm bài";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-success text-white text-center">
+            <h3>Lịch sử làm bài</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.ExamResults.Any())
+            {
+                <table class="table table-hover table-bordered align-middle text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên bài kiểm tra</th>
+                            <th>Điểm</th>
+                            <th>Số câu đúng</th>
+                            <th>Tổng số câu</th>
+                            <th>Thời gian làm</th>
+                            <th>Ngày thi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var (exam, index) in Model.ExamResults.Select((e, i) => (e, i + 1)))
+                        {
+                            <tr>
+                                <td>@index</td>
+                                <td>@exam.Quiz.QuizTitle</td>
+                                <td>@exam.Score</td>
+                                <td>@exam.CorrectAnswers</td>
+                                <td>@exam.TotalQuestions</td>
+                                <td>
+                                    @Model.FormatDuration(exam.DurationMinute ?? 0)
+                                </td>
+                                <td>@exam.StartTime.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info text-center">
+                    <i class="fa-solid fa-info-circle"></i> Bạn chưa có bài làm nào.
+                </div>
+            }
+
+            <div class="text-center mt-4">
+                <a asp-page="/Index"
+                   class="btn btn-outline-primary">
+                    <i class="fa-solid fa-arrow-left"></i> Quay lại trang chủ
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

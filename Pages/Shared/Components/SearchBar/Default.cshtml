@@ -1,0 +1,49 @@
+﻿@using System.Linq
+@{
+    var currentPagePath = ViewBag.CurrentPagePath as string ?? Context.Request.Path;
+    var searchPageTarget = currentPagePath;
+    var currentQuery = ViewData["CurrentQuery"] as string;
+
+    var routeValues = ViewContext.RouteData.Values;
+
+    var routeDataStrings = routeValues
+        .Where(kvp => kvp.Key.ToLower() != "query" &&
+                      kvp.Key.ToLower() != "handler" &&
+                      kvp.Key.ToLower() != "page")
+        .ToDictionary(
+    kvp => kvp.Key,
+    kvp => kvp.Value?.ToString() ?? string.Empty
+        );
+}
+
+<div class="search-bar-wrapper" style="position: relative;">
+
+    <form asp-page="/Admin/Search" method="get" class="me-3" style="width: 300px;">
+        <div class="input-group input-group-sm">
+
+            <input class="form-control" type="search"
+                   id="admin-search-input"
+                   name="query"
+                   value="@currentQuery"
+                   placeholder="Tìm kiếm toàn hệ thống..."
+                   aria-label="Search"
+                   autocomplete="off">
+
+            <button class="btn btn-outline-secondary" type="submit">
+                <i class="fa-solid fa-search"></i>
+            </button>
+        </div>
+    </form>
+
+    <div id="admin-search-suggestions" class="list-group shadow-sm"
+         style="position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                z-index: 1050;
+                display: none;
+                max-height: 400px;
+                overflow-y: auto;">
+    </div>
+
+</div>

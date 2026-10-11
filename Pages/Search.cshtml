@@ -1,0 +1,202 @@
+﻿@page
+@model DALTWNC_QUIZ.Pages.SearchModel
+@{
+    ViewData["Title"] = $"Kết quả cho: {Model.key}";
+    var totalResults = Model.FoundSubjects.Count + Model.FoundQuizzes.Count;
+}
+
+<div class="row mb-3 mt-3 align-items-center">
+    <div class="col-8">
+        <h2 class="section-title">Kết quả tìm kiếm cho: "@Model.key"</h2>
+    </div>
+    <div class="col-4 text-end">
+        <a asp-page="/Index" class="btn btn-outline-secondary btn-sm">
+            <i class="fa-solid fa-arrow-left me-1"></i> Quay lại Trang chủ
+        </a>
+    </div>
+</div>
+
+<hr />
+
+@if (totalResults > 0)
+{
+    <div class="col-12 mb-3">
+        <p class="text-muted">Tìm thấy @totalResults kết quả phù hợp.</p>
+    </div>
+
+    @if (Model.FoundSubjects.Any())
+    {
+        <h4 class="mb-3">Môn học</h4>
+        <div class="row g-4">
+            @foreach (var subject in Model.FoundSubjects)
+            {
+                <div class="col-md-4 col-sm-6">
+                    <div class="card subject-carousel-card h-100 text-center">
+                        <a asp-page="/Customer/SubjectQuizzes/Index"
+                           asp-route-id="@subject.SubjectID"
+                           class="card-body text-decoration-none d-flex flex-column justify-content-center align-items-center">
+                            <i class="fa-solid fa-book-open-reader card-icon text-primary mb-3" style="font-size: 2rem;"></i>
+                            <h6 class="card-title text-dark">@subject.SubjectName</h6>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+        <hr class="my-4" />
+    }
+
+    @if (Model.FoundQuizzes.Any())
+    {
+        <h4 class="mb-3">Bộ đề thi</h4>
+        <div class="row g-4">
+            @foreach (var quiz in Model.FoundQuizzes)
+            {
+                <div class="col-md-4 col-sm-6">
+                    <partial name="Shared/_QuizCard" model="quiz" />
+                </div>
+            }
+        </div>
+    }
+}
+else
+{
+    <div class="col-12 text-center">
+        <img src="~/images/banners/not-found.svg" alt="Không tìm thấy" style="max-height: 200px;" class="mb-3" />
+        <h4 class="text-muted">Không tìm thấy kết quả nào</h4>
+        <p>Vui lòng thử tìm kiếm với một từ khóa khác.</p>
+    </div>
+}
+
+@section Scripts {
+    @Html.AntiForgeryToken()
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.save-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+
+                    const quizId = btn.dataset.quizId;
+                    const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+                    const token = tokenInput ? tokenInput.value : '';
+
+                    try {
+                        const response = await fetch(`/Index?handler=ToggleSave`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'RequestVerificationToken': token
+                            },
+                            body: JSON.stringify({
+                                quizId: parseInt(quizId),
+                                returnUrl: window.location.pathname + window.location.search
+                            })
+                        });
+
+                        if (!response.ok) throw new Error('Request failed');
+
+                        const result = await response.json();
+                        const icon = btn.querySelector('i');
+
+                        if (result.success) {
+                            if (result.saved) {
+                                btn.classList.remove('btn-outline-secondary');
+                                btn.classList.add('btn-outline-danger');
+                                icon.classList.remove('fa-regular');
+                                icon.classList.add('fa-solid');
+                                btn.title = 'Bỏ lưu';
+                            } else {
+                                btn.classList.remove('btn-outline-danger');
+                                btn.classList.add('btn-outline-secondary');
+                                icon.classList.remove('fa-solid');
+                                icon.classList.add('fa-regular');
+                                btn.title = 'Lưu xem sau';
+                            }
+
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'success',
+                                title: result.saved ? 'Đã lưu bộ đề thành công!' : 'Đã bỏ lưu bộ đề.',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                            });
+
+                        } else {
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'error',
+                                title: result.message || 'Có lỗi xảy ra.',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                            });
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Không thể gửi yêu cầu đến máy chủ.',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                });
+            });
+
+            document.querySelectorAll('.take-exam-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+
+                    const targetUrl = btn.dataset.url;
+                    const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+                    const token = tokenInput ? tokenInput.value : '';
+
+                    try {
+                        const response = await fetch(`/Index?handler=CheckLogin`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'RequestVerificationToken': token
+                            }
+                        });
+
+                        if (!response.ok) throw new Error('Network response was not ok');
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            window.location.href = targetUrl;
+                        } else {
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'warning',
+                                title: result.message || 'Bạn cần đăng nhập.',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                            });
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Lỗi kết nối đến máy chủ.',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
+}

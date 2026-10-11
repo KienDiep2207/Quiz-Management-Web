@@ -1,0 +1,64 @@
+﻿@page "{id:int}"
+@model DALTWNC_QUIZ.Pages.Admin.User.DetailsModel
+@{
+    ViewData["Title"] = "Chi tiết User";
+}
+
+<div class="pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">@ViewData["Title"]: @Model.Customer.CustomerName</h1>
+    <div class="mt-4">
+        <a href="javascript:void(0);" onclick="history.back();" class="btn btn-outline-secondary btn-sm" title="Quay lại">
+            <i class="fa-solid fa-arrow-left"></i> Quay lại
+        </a>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h5 class="mb-0">Thông tin tài khoản</h5>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Tên đăng nhập</dt>
+            <dd class="col-sm-9">@Model.Customer.User.Username</dd>
+
+            <dt class="col-sm-3">Quyền</dt>
+            <dd class="col-sm-9">
+                @if (Model.Customer.User.UserRole == "A")
+                {
+                    <span class="badge bg-danger">Admin</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">Customer</span>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="card shadow-sm mt-4">
+    <div class="card-header">
+        <h5 class="mb-0">Thông tin cá nhân (Customer)</h5>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Customer ID</dt>
+            <dd class="col-sm-9">@Model.Customer.CustomerID</dd>
+
+            <dt class="col-sm-3">Họ và tên</dt>
+            <dd class="col-sm-9">@Model.Customer.CustomerName</dd>
+
+            <dt class="col-sm-3">Số điện thoại</dt>
+            <dd class="col-sm-9">@Model.Customer.CustomerPhone</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@(Model.Customer.CustomerEmail ?? "---")</dd>
+
+            <dt class="col-sm-3">Địa chỉ</dt>
+            <dd class="col-sm-9">@(Model.Customer.CustomerAddress ?? "---")</dd>
+        </dl>
+    </div>
+</div>
+
+

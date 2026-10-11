@@ -1,0 +1,18 @@
+﻿.bg-orange {
+    background-color: #fd7e14 !important; /* Màu cam đậm */
+    color: #ffffff !important; /* Chữ trắng trên nền cam */
+}
+
+.text-orange {
+    color: #fd7e14 !important;
+}
+
+/* --- (Giữ nguyên .bg-teal và .text-teal) --- */
+.bg-teal {
+    background-color: #20c997 !important; /* Màu xanh ngọc lục bảo */
+    color: #ffffff !important;
+}
+
+.text-teal {
+    color: #20c997 !important;
+}

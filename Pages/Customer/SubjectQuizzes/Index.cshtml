@@ -1,0 +1,175 @@
+﻿@page "{id:int}"
+@model DALTWNC_QUIZ.Pages.Customer.SubjectQuizzes.IndexModel
+@{
+    ViewData["Title"] = $"Bộ đề {Model.Subject?.SubjectName}";
+}
+
+<div class="mb-3">
+    <a asp-page="/Customer/Subjects/Index"
+       onclick="if(history.length > 1){ event.preventDefault(); history.back(); }"
+       class="btn btn-outline-secondary btn-sm">
+        <i class="fa-solid fa-arrow-left me-1"></i>
+        Quay lại
+    </a>
+</div>
+
+<div class="container mt-5">
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <h3 class="section-title">Bộ đề thi @Model.Subject?.SubjectName</h3>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        @if (Model.QuizList.Any())
+        {
+            @foreach (var quiz in Model.QuizList)
+            {
+                <div class="col-md-4 col-sm-6">
+                    <partial name="Shared/_QuizCard" model="quiz" />
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <p class="text-center text-muted">Chưa có bộ đề nào cho môn học này.</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Html.AntiForgeryToken()
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.save-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+
+                    const quizId = btn.dataset.quizId;
+                    const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+                    const token = tokenInput ? tokenInput.value : '';
+
+                    try {
+                        const response = await fetch(`/Index?handler=ToggleSave`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'RequestVerificationToken': token
+                            },
+                            body: JSON.stringify({
+                                quizId: parseInt(quizId),
+                                returnUrl: window.location.pathname + window.location.search
+                            })
+                        });
+
+                        if (!response.ok) throw new Error('Request failed');
+
+                        const result = await response.json();
+                        const icon = btn.querySelector('i');
+
+                        if (result.success) {
+                            if (result.saved) {
+                                btn.classList.remove('btn-outline-secondary');
+                                btn.classList.add('btn-outline-danger');
+                                icon.classList.remove('fa-regular');
+                                icon.classList.add('fa-solid');
+                                btn.title = 'Bỏ lưu';
+                            } else {
+                                btn.classList.remove('btn-outline-danger');
+                                btn.classList.add('btn-outline-secondary');
+                                icon.classList.remove('fa-solid');
+                                icon.classList.add('fa-regular');
+                                btn.title = 'Lưu xem sau';
+                            }
+
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'success',
+                                title: result.saved ? 'Đã lưu bộ đề thành công!' : 'Đã bỏ lưu bộ đề.',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                            });
+
+                        } else {
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'error',
+                                title: result.message || 'Có lỗi xảy ra.',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                            });
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Không thể gửi yêu cầu đến máy chủ.',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                });
+            });
+
+            document.querySelectorAll('.take-exam-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+
+                    const targetUrl = btn.dataset.url;
+                    const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+                    const token = tokenInput ? tokenInput.value : '';
+
+                    try {
+                        const response = await fetch(`/Index?handler=CheckLogin`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'RequestVerificationToken': token
+                            }
+                        });
+
+                        if (!response.ok) throw new Error('Network response was not ok');
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            window.location.href = targetUrl;
+                        } else {
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'warning',
+                                title: result.message || 'Bạn cần đăng nhập.',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                            });
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Lỗi kết nối đến máy chủ.',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
+}

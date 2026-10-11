@@ -1,0 +1,18 @@
+﻿@model DALTWNC_QUIZ.Models.QuizAttempt
+
+@if (Model != null)
+{
+    <div class="alert alert-warning border-warning shadow-sm fixed-bottom m-0 rounded-0" style="z-index: 9999;">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fa-solid fa-triangle-exclamation text-danger me-2"></i>
+                <strong>Cảnh báo:</strong> Bạn đang có bài thi
+                <span class="text-primary fw-bold">"@Model.Quiz?.QuizTitle"</span>
+                chưa nộp!
+            </div>
+            <a href="/Customer/Exam/Take/@Model.QuizID" class="btn btn-danger btn-sm">
+                <i class="fa-solid fa-play"></i> Quay lại làm bài ngay
+            </a>
+        </div>
+    </div>
+}

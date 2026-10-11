@@ -1,0 +1,78 @@
+﻿@page
+@model DALTWNC_QUIZ.Pages.Customer.Quiz.SavedModel
+@{
+    Layout = "~/Pages/Shared/_Layout_Cus.cshtml";
+    ViewData["Title"] = "Bộ đề đã lưu";
+}
+
+<link rel="stylesheet" href="~/css/customer/quiz.css" />
+
+<div class="container mt-5">
+    <div class="row mb-3">
+        <div class="col-12">
+            <h2 class="section-title">📘 Bộ đề bạn đã lưu</h2>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        @if (Model.SavedQuizzes.Any())
+        {
+            @foreach (var saved in Model.SavedQuizzes)
+            {
+                var quiz = saved.Quiz;
+
+                <div class="col-md-4 col-sm-6">
+                    <div class="card subject-card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <span class="badge bg-success">
+                                    @(quiz.Subject?.SubjectName ?? "Chung")
+                                </span>
+                            </div>
+
+                            <h5>
+                                <a asp-page="/Quizzes/Take" asp-route-id="@quiz.QuizID" class="card-title-link">
+                                    @quiz.QuizTitle
+                                </a>
+                            </h5>
+
+                            <p class="card-text text-muted">@quiz.Description</p>
+                        </div>
+
+                        <div class="card-footer card-actions">
+                            <div class="action-meta">
+                                <small class="text-muted">
+                                    <i class="fa-solid fa-list-ol me-1"></i>
+                                    @quiz.TotalQuestions câu hỏi
+                                </small>
+                                <br />
+                                <small class="text-muted">
+                                    <i class="fa-regular fa-clock me-1"></i>
+                                    Đã lưu: @saved.SavedDate.ToString("dd/MM/yyyy")
+                                </small>
+                            </div>
+
+                            <div class="action-buttons">
+                                <form method="post" asp-page-handler="Unsave" asp-route-id="@saved.SavedID" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-outline-warning" title="Bỏ lưu">
+                                        <i class="fa-solid fa-bookmark"></i>
+                                    </button>
+                                </form>
+
+                                <a asp-page="/Quizzes/Take" asp-route-id="@quiz.QuizID" class="btn btn-sm btn-primary">
+                                    Làm bài <i class="fa-solid fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <p class="text-center text-muted">Bạn chưa lưu bộ đề nào.</p>
+            </div>
+        }
+    </div>
+</div>

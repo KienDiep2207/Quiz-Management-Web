@@ -1,0 +1,113 @@
+/* 1. Import Font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+.input-group-sm .form-control {
+    border-radius: 20px 0 0 20px;
+}
+
+.input-group-sm .btn {
+    border-radius: 0 20px 20px 0;
+}
+
+    .input-group-sm .btn i {
+        transition: transform 0.2s ease;
+    }
+
+    .input-group-sm .btn:hover i {
+        transform: scale(1.1);
+    }
+/* Định nghĩa biến màu tùy chỉnh */
+:root {
+    --bs-teal: #20c997; /* Mã màu Teal */
+}
+
+/* Định nghĩa lớp màu nền */
+.bg-teal {
+    background-color: var(--bs-teal) !important;
+}
+
+/* Định nghĩa lớp màu chữ */
+.text-teal {
+    color: var(--bs-teal) !important;
+}
+
+/* Định nghĩa lớp màu viền */
+.border-teal {
+    border-color: var(--bs-teal) !important;
+}
+
+/* Định nghĩa lớp màu nền Outline cho nút (nếu cần) */
+.btn-outline-teal {
+    color: var(--bs-teal);
+    border-color: var(--bs-teal);
+}
+
+    .btn-outline-teal:hover {
+        color: #fff !important;
+        background-color: var(--bs-teal) !important;
+        border-color: var(--bs-teal) !important;
+    }
+.row.g-3 > div:nth-child(8) .card {
+    background-color: var(--bs-teal) !important;
+}
+
+/* =================================== */
+/* === Card Môn học cho Carousel === */
+/* =================================== */
+
+.subject-item-card {
+    transition: all 0.3s ease;
+    border: 1px solid #e0e0e0;
+}
+
+    .subject-item-card .card-body {
+        padding: 1.5rem 1rem;
+    }
+
+    .subject-item-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+        border-color: var(--bs-primary); /* Giả định bạn dùng màu primary của Bootstrap */
+    }
+
+    .subject-item-card .card-icon {
+        font-size: 2.5rem; /* Kích thước icon */
+        display: block;
+        line-height: 1;
+    }
+
+    .subject-item-card .card-title {
+        font-weight: 600;
+        margin-top: 0.5rem;
+        color: #333; /* Đảm bảo màu chữ rõ ràng */
+    }
+
+/* Tùy chỉnh nút điều khiển cho Carousel môn học */
+#subjectCarousel .carousel-control-prev,
+#subjectCarousel .carousel-control-next {
+    width: 5%;
+}
+
+#subjectCarousel .carousel-control-prev-icon,
+#subjectCarousel .carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    background-size: 50% 50%;
+}
+.card-actions .action-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Cho phép xuống dòng nếu không đủ chỗ */
+}
+
+.card-rating {
+    font-size: 0.9em;
+}
+
+    .card-rating .fa-star,
+    .card-rating .fa-star-half-stroke {
+        color: #ffc107; /* Màu vàng của bootstrap */
+    }
+
+    .card-rating .rating-value {
+        color: #212529; /* Màu chữ chính */
+    }

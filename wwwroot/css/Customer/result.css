@@ -1,0 +1,149 @@
+﻿.result-container {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #eaecef;
+    min-height: 100vh;
+}
+
+.result-title {
+    color: #c8911c;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.result-card {
+    background-color: white;
+    display: inline-block;
+    padding: 40px 60px;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-name {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.quiz-score {
+    font-size: 40px;
+    font-weight: 700;
+    color: #ff2a2a;
+    margin-bottom: 30px;
+}
+
+.result-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+}
+
+.btn-green {
+    background-color: #34c759;
+}
+
+.btn-orange {
+    background-color: #c68c27;
+}
+
+.btn-blue {
+    background-color: #007aff;
+}
+
+.btn-yellow {
+    background-color: #f4d03f;
+    color: #000;
+}
+
+.btn-outline {
+    border: 1.5px solid #000;
+    background-color: white;
+    color: #000;
+}
+
+.btn:hover {
+    opacity: 0.85;
+}
+.result-stats-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    border: 1px solid #e9ecef;
+}
+
+.stat-box {
+    flex: 1;
+    padding: 0 0.5rem;
+}
+
+    .stat-box:not(:last-child) {
+        border-right: 2px solid #dee2e6;
+    }
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #dc3545;
+    display: block;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    display: block;
+    margin-top: 0.25rem;
+}
+/* Thêm vào file result.css hoặc thẻ <style> */
+.quiz-meta-grid {
+    gap: 1rem 0; /* Khoảng cách giữa các cột trên mobile */
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    height: 100%;
+    border: 1px solid #e9ecef;
+}
+
+    .meta-item .bi {
+        font-size: 2rem; /* Icon to, rõ ràng */
+        margin-bottom: 0.5rem;
+    }
+
+    .meta-item .meta-label {
+        font-size: 0.9rem;
+        color: #6c757d;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .meta-item .meta-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #212529;
+    }
